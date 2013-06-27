@@ -1,0 +1,133 @@
+<html>
+<HEAD>
+    <title>江西财经大学选课系统 (夏七客户端)</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+</HEAD>
+<style>
+    tr {
+        cursor: arrow;
+    }
+
+    .mouseover {
+        background-color: #F9EAA2;
+    }
+
+    .mouseout {
+        background-color: #EBEBEB;
+    }
+
+    table {
+        border-color: #000000;
+        border-collapse: collapse;
+        font-size: 14;
+        background-color: #EBEBEB;
+    }
+
+    .btn {
+        padding: 2 4 0 4;
+        font-size: 12px;
+        height: 23;
+        background-color: #EAEAEA;
+        border-width: 1;
+
+    }
+
+    body {
+        background-color: #99cccc;
+        font-size: 14;
+    }
+</style>
+<body onbeforeunload="removeline()">
+<div style="display:none" id="Loadingimg"><img src="forIE/indicator.gif"/>正在加载,请等待!...</div>
+<div align="center" style='fontsize:16px'><b>江西财经大学选课系统 (夏七客户端)</b></div>
+<br>
+
+<INPUT TYPE=button id="viewBtn" value='查看已选课程' class='btn' name="viewBtn" onclick="this.disabled=true;viewData();">
+<INPUT TYPE=button id="selectCourseBtn" value='选课按钮' name="selectCourseBtn" class='btn'
+       onclick="Element.show('divFlyBar');">
+
+<hr>
+
+<div id="divFlyBar" style='position:absolute;top:45;left:10;display:none;z-index:100'>
+    <table border=1 width='400'>
+        <tr>
+            <td nowrap>课程代码:
+            <td>
+            <td nowrap><INPUT TYPE="text" NAME="courseCode" value="" id="courseCode"></td>
+            <td nowrap>班号:
+            <td>
+            <td nowrap><INPUT TYPE="text" NAME="classNO" value="XXX" id="classNO"></td>
+            <td nowrap><INPUT TYPE="button" value="查询" class='btn'
+                              onclick="viewCourse($('courseCode').value,$('classNO').value);"></td>
+            <td nowrap><INPUT TYPE="button" value="关闭" class='btn' onclick="$('divFlyBar').style.display='none';"></td>
+        </tr>
+    </table>
+    <div id="listCoursePanel" style="cursor:hand"></div>
+</div>
+<div id="selectCourseInfoPanel"></div>
+<BR>
+<bR>
+<span style="color:red;font-size:14;">
+    <INPUT TYPE="button"  value="安全退出请点击这里!!!!!!!" class='btn' onclick="logout();"> <br>
+    <INPUT TYPE="button" id="remainTime" value="" class='btn' > <br>
+    <div id="showNote">
+
+    </div>
+</span><br>
+<hr>
+
+<div id="showStatus" style="color: red">
+      自动选课状态信息输出：(以下信息只做参考,可能顺序会出问题,请以刷出的"已选课表"为准哦！)<br>
+    </div>
+</body>
+</html>
+<script src="forIE/prototype.js" type="text/javascript"></script>
+<script src="forIE/selectSubject.js" type="text/javascript"></script>
+<script src="forIE/moveDiv.js" type="text/javascript"></script>
+<script language="javascript">
+    document.getElementById('viewBtn').disabled = true;
+    var speed = 1000; //速度
+    var wait = 20; //停留时间
+    var remainTime = 5*60 //为了公平起见   如果是自动选课模式只有5分钟选课时间
+    function updateinfo() {
+        if (wait == 0) {
+            document.getElementById('viewBtn').value = "查看已选课程!";
+            document.getElementById('viewBtn').disabled = false;
+        }
+        else {
+            document.getElementById('viewBtn').value = "您在" + wait + "秒后可以再刷新课表！";
+            wait--;
+            window.setTimeout("updateinfo()", speed);
+        }
+
+    }
+    function remainT(){
+        if(remainTime ==0){
+            logout(); //退出
+        }
+        else{
+            document.getElementById('remainTime').value = "请注意：请不要按网页刷新按钮或F5键刷新本页面，否则可能会退出选课！！您只剩下" + remainTime/60 + "分钟的选课时间了！时间到了会自动退出哦!";
+            remainTime-=60;
+            window.setTimeout("remainT()", speed*60);
+        }
+    }
+    updateinfo();
+    if(urlarg["isAutoSelectCourse"]) {
+
+        remainT();
+    }
+    else{
+        $("showNote").innerHTML = "请注意：请不要按网页刷新按钮或F5键刷新本页面，否则会退出选课！！您的选课时间为20分钟！20分钟后您将自动退出登陆!";
+        $("showStatus").innerHTML = "";
+    }
+
+</script>
+
+
+
+

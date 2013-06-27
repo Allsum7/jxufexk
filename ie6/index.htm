@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML>
+<HEAD>
+    <META content="IE=5.0000" http-equiv="X-UA-Compatible">
+    <TITLE>江西财经大学选课系统 (夏七客户端)</TITLE>
+
+    <META content=no-cache http-equiv=Pragma>
+    <META content=no-cache http-equiv=Cache-Control>
+    <META content=0 http-equiv=Expires>
+    <META content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <STYLE type=text/css>
+        TABLE {
+            FONT-SIZE: 12px;
+            FONT-FAMILY: Arial, Helvetica, sans-serif;
+            BORDER-COLLAPSE: collapse;
+            TEXT-ALIGN: center;
+            MARGIN: 0px auto
+        }
+
+        TABLE TD {
+            BORDER-TOP: 1px solid;
+            BORDER-RIGHT: 1px solid;
+            BORDER-BOTTOM: 1px solid;
+            BORDER-LEFT: 1px solid
+        }
+
+        INPUT {
+            FONT-SIZE: 16px;
+            HEIGHT: 30px;
+            FONT-FAMILY: Arial, Helvetica, sans-serif;
+            FONT-WEIGHT: bold;
+            FONT-STYLE: normal;
+            WIDTH: 180px
+        }
+
+        input2 {
+            FONT-SIZE: 14px;
+            HEIGHT: 30px;
+            FONT-FAMILY: Arial, Helvetica, sans-serif;
+            FONT-STYLE: normal;
+            WIDTH: 160px
+        }
+
+        .btn {
+            BORDER-LEFT-WIDTH: 1px;
+            FONT-SIZE: 12px;
+            HEIGHT: 23px;
+            BORDER-RIGHT-WIDTH: 1px;
+            BORDER-BOTTOM-WIDTH: 1px;
+            PADDING-BOTTOM: 0px;
+            PADDING-TOP: 2px;
+            PADDING-LEFT: 4px;
+            PADDING-RIGHT: 4px;
+            BORDER-TOP-WIDTH: 1px;
+            WIDTH: 120px;
+            BACKGROUND-COLOR: #eaeaea
+        }
+
+        .btn2 {
+            BORDER-LEFT-WIDTH: 1px;
+            FONT-SIZE: 12px;
+            HEIGHT: 23px;
+            BORDER-RIGHT-WIDTH: 1px;
+            BORDER-BOTTOM-WIDTH: 1px;
+            PADDING-BOTTOM: 0px;
+            PADDING-TOP: 2px;
+            PADDING-LEFT: 4px;
+            PADDING-RIGHT: 4px;
+            BORDER-TOP-WIDTH: 1px;
+            WIDTH: 250px;
+            BACKGROUND-COLOR: #eaeaea
+        }
+
+        BODY {
+            MARGIN-TOP: 10px;
+            background-color: #99cccc;
+            TEXT-ALIGN: center
+        }
+
+        #center {
+            MARGIN-RIGHT: auto;
+            MARGIN-LEFT: auto;
+        }
+
+        .father .leftSon {
+            height: auto;
+            width: 500px;
+            float: left;
+        }
+
+        .father .rightSon {
+            float: right;
+            height: auto;
+            width: 450px;
+        }
+
+        .father {
+            position: relative;
+            width: 1000px;
+            margin-top: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            margin: center;
+        }
+    </STYLE>
+
+    <META name=GENERATOR content="MSHTML 10.00.9200.16612">
+</HEAD>
+<BODY><BR><BR><BR>
+
+<div class="father">
+<div style=" background-color:#eaeaea ;FONT-SIZE: 22px; color: #f90; FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-WEIGHT: bold"
+     align=center>江西财经大学选课系统客户端（夏七版For IE6）
+
+</div>
+<table width=1000 align=center valign="center">
+    <TR>
+        <TD width=100>
+            <DIV align=center><font color="red">自定义选项：<font></DIV>
+        </TD>
+        <TD width=200>
+            是否在校内?<INPUT type="checkbox" checked="Yes" id="isInSchool">
+        </TD>
+        <TD width=100>
+            <font color="red">回车自动认证登录<font>
+        </TD>
+        <TD width=200>
+            是否自动认证?<INPUT type="checkbox" checked="Yes" id="isAutoIdentify">
+        </TD>
+        <TD width=100>
+            <font color="red">登录后自动选课（需填写左下表）<font>
+        </TD>
+        <TD width=200>
+            是否自动选课?<INPUT type="checkbox" id="isAutoSelectCourse" onclick="AutoSelectCourseInfo();" >
+        </TD>
+    </TR>
+    <TR>
+        <TD width=100>
+            <DIV align=center>通道一：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel1 size=26 value="http://172.31.5.72"></DIV>
+        </TD>
+
+        <TD width=100>
+            <DIV align=center>通道二：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel2 size=26 value="http://172.31.5.74"></DIV>
+        </TD>
+
+        <TD width=100>
+            <DIV align=center>通道三：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel3 size=26 value="http://172.31.5.75"></DIV>
+        </TD>
+    </TR>
+    <TR>
+        <TD width=100>
+            <DIV align=center>通道四：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel4 size=26 value="http://172.31.5.76"></DIV>
+        </TD>
+
+        <TD width=100>
+            <DIV align=center>通道五：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel5 size=26 value="http://172.31.5.173"></DIV>
+        </TD>
+
+        <TD width=100>
+            <DIV align=center>通道六：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel6 size=26 value="http://172.31.5.68"></DIV>
+        </TD>
+    </TR>
+    <TR>
+        <TD width=100>
+            <DIV align=center>通道七：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel7 size=26 value="http://172.31.5.195"></DIV>
+        </TD>
+
+        <TD width=100>
+            <DIV align=center>通道八：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel8 size=26 value="http://172.31.5.139"></DIV>
+        </TD>
+
+        <TD width=100>
+            <DIV align=center>通道九（<font color="red">校外</font>）：</DIV>
+        </TD>
+        <TD width=200>
+            <DIV align=left><INPUT id=channel9 size=26 value="http://210.35.207.150"></DIV>
+        </TD>
+    </TR>
+
+</table>
+
+<div class="leftSon">
+    <FORM name="autoSelectCourseForm">
+        <table width="550" height="260" border="1">
+            <tr>
+                <td colspan="4">
+                    <div align="center" style="FONT-SIZE: 18px; FONT-WEIGHT: bold">预选课表(自动选课需要)</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">序号</div>
+                </td>
+                <td>
+                    <div align="center">课程代码</div>
+                </td>
+                <td>
+                    <div align="center">班号</div>
+                </td>
+                <td>
+                    <div align="center">是否要教材</div>
+                </td>
+                <td>
+                    <div align="center">是否要重修</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">1</div>
+                </td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=courseId1 name=courseId1 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=classId1 name=classId1 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isNeedBook1 name=isNeedBook1></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isRetaken1 name=isRetaken1></td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">2</div>
+                </td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=courseId2 name=courseId2 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=classId2 name=classId2 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isNeedBook2 name=isNeedBook2></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isRetaken2 name=isRetaken2></td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">3</div>
+                </td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=courseId3 name=courseId3 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=classId3 name=classId3 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox"  id=isNeedBook3 name=isNeedBook3></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isRetaken3 name=isRetaken3></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">4</div>
+                </td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=courseId4  name=courseId4 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=classId4 name=classId4 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isNeedBook4 name=isNeedBook4></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isRetaken4 name=isRetaken4></td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">5</div>
+                </td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=courseId5  name=courseId5 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT style="WIDTH: 80px" id=classId5 name=classId5 value=""></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isNeedBook5 name=isNeedBook5></td>
+                <td>
+                    <div align="center"></div>
+                    <INPUT type="checkbox" id=isRetaken5 name=isRetaken5></td>
+            </tr>
+        </table>
+    </FORM>
+</div>
+<!--end leftSon -->
+<DIV class="rightSon" id=loginPanel>
+    <FORM onsubmit="return checkForm();" method=post name=loginForm>
+        <TABLE width=450 height="260" align=center valign="center">
+            <TBODY>
+            <TR>
+                <TD colSpan=2 align=center>
+                    <DIV
+                            style="FONT-SIZE: 18px; FONT-WEIGHT: bold"
+                            align=center>登陆
+                    </DIV>
+                </TD>
+            </TR>
+            <TR>
+                <TD width=166>
+                    <DIV align=center>一卡通卡号：</DIV>
+                </TD>
+                <TD width=190>
+                    <DIV align=left><INPUT id=username size=26 name=username value=""></DIV>
+                </TD>
+            </TR>
+            <TR>
+                <TD width=166>
+                    <DIV align=center>一卡通密码：</DIV>
+                </TD>
+                <TD width=190>
+                    <DIV align=left><INPUT id=password size=26 type=password name=password value="">
+                    </DIV>
+                </TD>
+            </TR>
+            <TR>
+                <TD width=166>
+                    <DIV align=center>学号：(自动认证需要)</DIV>
+                </TD>
+                <TD width=190>
+                    <DIV align=left><INPUT id=stuname size=26 name=stuname value=""></DIV>
+
+                </TD>
+            </TR>
+            <DIV id=codePanel></DIV>
+            <TR>
+                <TD>登录验证码<BR>(单击验证码可换验证码)</TD>
+                <TD noWrap align=left><INPUT style="WIDTH: 80px" size=10 name=signImg id=signImg>
+                    <SPAN id=authImg></SPAN><BR><INPUT onclick=javascript:changeBox() class=btn2 type=button
+                                                       value=随机获取通道和验证码 name=signBtn>
+                </TD>
+            </TR>
+            <TR>
+                <TD colSpan=2>
+                    <DIV align=center><INPUT style="WIDTH: 400px" onclick=checkForm() class=btn type=button
+                                             value="点击此处登录(或者直接回车)" name=loginButton>
+
+                        <DIV id=Loadingimg style="DISPLAY: none"><IMG
+                                src="forIE/indicator.gif">正在加载,请等待!...
+                        </DIV>
+                    </DIV>
+                </TD>
+            </TR>
+
+            <DIV></DIV>
+            </TBODY>
+        </TABLE>
+    </FORM>
+
+    <TABLE id=mesPanel style="DISPLAY: none" width=310 align=center
+           valign="center">
+        <TBODY>
+        <TR align=left>
+            <TD align=left><SPAN id=tips
+                                 style="BORDER-TOP: menu 1px solid; BORDER-RIGHT: menu 1px solid; BORDER-BOTTOM: menu 1px solid; BORDER-LEFT: menu 1px solid; DISPLAY: none; WIDTH: 310px; BACKGROUND-COLOR: #ffffcc"></SPAN>
+            </TD>
+        </TR>
+        <TR align=left>
+            <TD align=left><SPAN id=tips2
+                                 style="BORDER-TOP: menu 1px solid; BORDER-RIGHT: menu 1px solid; BORDER-BOTTOM: menu 1px solid; BORDER-LEFT: menu 1px solid; DISPLAY: none; WIDTH: 310px; BACKGROUND-COLOR: #ffffcc; align: left"></SPAN>
+            </TD>
+        </TR>
+        <TR align=left>
+            <TD align=left><SPAN id=tips3
+                                 style="BORDER-TOP: menu 1px solid; BORDER-RIGHT: menu 1px solid; BORDER-BOTTOM: menu 1px solid; BORDER-LEFT: menu 1px solid; DISPLAY: none; WIDTH: 310px; BACKGROUND-COLOR: #ffffcc; align: left"></SPAN>
+            </TD>
+        </TR>
+        </TBODY>
+    </TABLE>
+</DIV>
+<!--end loginPanel -->
+</div>
+<!-- end father-->
+</BODY>
+</HTML>
+<script>
+    document.getElementById('signImg').value = '';
+
+</script>
+<SCRIPT type=text/javascript src="forIE/prototype.js"></SCRIPT>
+<SCRIPT type=text/javascript src="forIE/login.js"></SCRIPT>
