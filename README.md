@@ -1,4 +1,4 @@
-江西财经大学选课客户端
+江西财经大学选课客户端(酱菜选课)
 =======
 
 官网：<a href="http://jxufexk.duapp.com">http://jxufexk.duapp.com</a> 
