@@ -105,7 +105,7 @@ function showResponse2(originalRequest) {
         MyScript = match[1];
         eval(MyScript);
     }
-    var Html = resText.replace(reg, "");
+   
     $('listCoursePanel').innerHTML = Html;
 
 }

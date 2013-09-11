@@ -1,0 +1,40 @@
+{
+    "name": "酱菜选课(Chrome插件版)V2",
+    "version": "0.2.2",
+    "manifest_version": 2,
+    "description": "一键认证，一键选课！从此不用再用IE选课啦！给你不一样的江财选课体验.",
+	"homepage_url": "http://jxufexk.duapp.com/",
+    "permissions": [
+	    "notifications",
+        "tabs",
+        "storage",
+		"http://xk.jxufe.edu.cn/",
+		"http://xk.jxufe.cn/",
+		"http://*/lightSelectSubject*",
+		"http://*/selectSubjectForTyxy*"
+    ],
+	"web_accessible_resources": [
+	    "song/song.ogg"
+	],
+    "background": {
+        "page": "background.html"
+    },
+    "icons": {
+        "48": "img/icon-48.png",
+        "128": "img/icon-128.png"
+    },
+    "browser_action": {
+        "default_icon": "img/icon-48.png", // optional
+		"default_popup":"popup.html",
+        "default_title": "酱菜选课(Chrome插件版)v0.22"      // optional; shown in tooltip
+
+    },
+    "content_scripts": [
+        {
+            "matches": ["http://xk.jxufe.edu.cn/","http://xk.jxufe.cn/","http://*/lightSelectSubject*","http://*/selectSubjectForTyxy*"],
+            "js": ["js/jquery.js", "contentscript.js"],
+			"css":["css/bootstrap.min.css"]
+			
+        }
+    ]
+}

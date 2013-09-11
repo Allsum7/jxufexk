@@ -5,17 +5,70 @@ var channel = "";  //当前通道
 //   "http://172.31.5.68", "http://172.31.5.195", "http://172.31.5.139", "http://210.35.207.150"];      //通道列表
 var channels = new Array();
 var currentJ = 0; //当前通道下标
-
+var isFindAChannel = false;
 var isAutoIdentify = "";
 var isAutoSelectCourse = "";
 var isInSchool = "";
 var autoSelectCourseForm = "";
 
-function findAChannel() {      //随机选择一个通道,这里可以优化，但是考虑到服务器的承受能力不建议那么做
+var channelIn = new Array();   //校内
+var channelOut = new Array();  //校外
+
+function getChannels(){
+  var url = "http://jxufexk.duapp.com/getChannels.php";
+  var myAjax = new Ajax.Request(url, {
+        parameters: "",
+        method: "get",
+        onComplete: dealWithChannels,
+        asynchronous: true
+    });
+}
+
+
+function dealWithChannels(originalRequest){
+   var inc = 0;
+   var outc = 0;
+   var getStr  = originalRequest.responseText;
+   if(getStr!=""){
+      var urlArray = getStr.split("#");
+	  for(var i=1;i<urlArray.length;i++){
+	    if(urlArray[i].substr(0,1)=="1"){
+		   channelIn[inc++] = urlArray[i].substr(1);
+		}
+		else {
+		   channelOut[outc++] = urlArray[i].substr(1);
+		}
+	  }
+   }
+   else alert("与服务器连接失败！（可能原因：1:你没联网哦！2:不在IE兼容模式下！）");
+}
+
+/*function findAChannel() {      //连续遍历一遍所有通道 找到可以进入的通道
+    var url = 'loginCode.jsp';
+    for(var i=0;i<channels.length;i++){
+	  if(isFindAChannel) return;
+	  
+	  channel = channels[i];
+	  currentJ  = i;
+	  
+    alert("当前使用通道:" + channel);
+    var myAjax = new Ajax.Request(channel + url, {
+        parameters: "",
+        method: "post",
+        onComplete: forAChannel,
+        asynchronous: false
+    });
+    $('signBtn').disabled = false;
+	}
+	randomFindAChannel();
+    
+}*/
+
+function randomFindAChannel() {      // 随机找个通道
     var url = 'loginCode.jsp';
     var randomI = parseInt(Math.random() * (channels.length - 1));
     currentJ = randomI;
-    channel = channels[randomI] + "/lightSelectSubject/";
+    channel = channels[randomI];
     //alert("当前使用通道:" + channel);
     var myAjax = new Ajax.Request(channel + url, {
         parameters: "",
@@ -26,15 +79,15 @@ function findAChannel() {      //随机选择一个通道,这里可以优化，�
     $('signBtn').disabled = false;
 }
 function forAChannel(originalRequest) {
-
+    
     if (originalRequest.responseText == "") {
-        channel = channels[currentJ] + "/lightSelectSubject/";
+        channel = channels[currentJ];
         isFindAChannel = true;
         document.getElementById('authImg').innerHTML = "<img id='loginImg' src='" + channel + "loginSign.jsp' border=0 onclick='javascript:changeImage()'>";
     }
     else {
         document.getElementById('authImg').innerHTML = "<img id='loginImg' src=''";
-        $('codePanel').innerHTML = "<tr><td colspan='2'><span style='color:red'>此通道人数已满!请重新选择通道!</span></td></tr>";
+        $('codePanel').innerHTML = "<tr><td colspan='2'><span style='color:red'>此通道不可进入!请重新选择通道!</span></td></tr>";
     }
 
 }
@@ -133,7 +186,7 @@ function checkPermit() {
 function showResponse3(originalRequest) {
 
     if (originalRequest.responseText.replace("所有条件均符合选课条件") != null) {     //可改
-        var url = "./studentSelectSubject.htm" + "?channel=" + channel;
+        var url = "./studentSelectSubject.htm" + "?channel=" + channel +"&loadlocaljs="+loadlocaljs; 
         if (isAutoSelectCourse) {
             url += "&isAutoSelectCourse=" + document.getElementById("isAutoSelectCourse").checked;
             url += "&" + autoSelectCourseForm;
@@ -153,19 +206,18 @@ function changeImage() {
 
 function changeBox() {
 
+    //getNotification();
+    //getChannels(); 
+	
     isInSchool = document.getElementById("isInSchool").checked;
     isAutoIdentify = document.getElementById("isAutoIdentify").checked;
 
     if (isInSchool) {
-        var j = 0;
-        for (var i = 1; i <= 8; i++) {      //8个通道数        可改
-            var idname = "channel" + i;
-            var obj = document.getElementById(idname);
-            if (obj.value != "") {
-                channels[j++] = obj.value;
-            }
-        }
+        channels = channelIn;
     }
+	else{
+	    channels = channelOut;
+	}
     loginForm.loginButton.disabled = false;
     $('codePanel').innerHTML = "";
     var url = 'loginSign.jsp';
@@ -183,14 +235,7 @@ function changeBox() {
         return false;
     } else {
         $('signBtn').disabled = true;
-        if (isInSchool) {
-            findAChannel();
-
-        }
-        else {
-            channel = document.getElementById("channel9").value + "/lightSelectSubject/"; //        校外通道
-        }
-
+        randomFindAChannel();
     }
 }
 
@@ -229,4 +274,21 @@ document.onkeydown = function () {  //监听键盘回车事件
     if (event.keyCode == 13) {
         checkForm();
     }
+
 }
+function closeStatus(){
+       $("showStatus").style.display='none';
+}
+
+window.onload=function check(){
+   setTimeout("getNotification()",500);
+   setTimeout("getChannels();",500);
+   //getNotification();
+   //getChannels();
+}
+
+
+
+
+
+

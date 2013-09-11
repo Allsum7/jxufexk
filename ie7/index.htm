@@ -17,7 +17,7 @@
         }
     </style>
 </head>
-<body>
+<body >
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -27,7 +27,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#">江西财经大学选课系统客户端（酱菜选课For IE内核）</a>
+            <a class="brand" href="#">江西财经大学选课系统客户端（酱菜选课IE7_0.22 版）</a>
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
@@ -35,7 +35,7 @@
                 </p>
                 <ul class="nav">
                     <li class="active"><a href="./index.htm">首页</a></li>
-                    <li><a href="./studentSelectSubject.htm">选课界面</a></li>
+                   
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -44,11 +44,14 @@
 </div>
 
 <div class="container-fluid">
+ <div class="alert alert-success" id="showStatus" style="color: red;DISPLAY: none">
+   <button type="button" class="close" data-dismiss="alert" onclick="closeStatus();">&times;</button>
+</div>	
 <div class="hero-unit" style="background-color: #99cccc;">
 <table class="table" width=1000 align=center valign="center">
     <TR>
         <TD width=100>
-            <DIV align=center><font color="red">自定义选项：<font></DIV>
+            <DIV align=center><font color="red">自定义<BR>选项：<font></DIV>
         </TD>
         <TD width=200>
             <label class="checkbox">
@@ -56,7 +59,7 @@
             </label>
         </TD>
         <TD width=100>
-            <font color="red">回车自动认证登录<font>
+            <font color="red">回车自动<BR>认证登录<font>
         </TD>
         <TD width=200>
             <label class="checkbox">
@@ -64,7 +67,7 @@
             </label>
         </TD>
         <TD width=100>
-            <font color="red">登录后自动选课（需填写左下表）<font>
+            <font color="red">自动选课<BR>需左下表<font>
         </TD>
         <TD width=200>
             <label class="checkbox">
@@ -72,74 +75,10 @@
             </label>
         </TD>
     </TR>
-    <TR>
-        <TD width=100>
-            <DIV align=center>通道一：</DIV>
-        </TD>
-        <TD width=200>
-            <label class="input" align=left><INPUT id=channel1 size=26 value="http://172.31.5.72"></label>
-        </TD>
-
-        <TD width=100>
-            <DIV align=center>通道二：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel2 size=26 value="http://172.31.5.74"></DIV>
-        </TD>
-
-        <TD width=100>
-            <DIV align=center>通道三：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel3 size=26 value="http://172.31.5.75"></DIV>
-        </TD>
-    </TR>
-    <TR>
-        <TD width=100>
-            <DIV align=center>通道四：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel4 size=26 value="http://172.31.5.76"></DIV>
-        </TD>
-
-        <TD width=100>
-            <DIV align=center>通道五：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel5 size=26 value="http://172.31.5.173"></DIV>
-        </TD>
-
-        <TD width=100>
-            <DIV align=center>通道六：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel6 size=26 value="http://172.31.5.68"></DIV>
-        </TD>
-    </TR>
-    <TR>
-        <TD width=100>
-            <DIV align=center>通道七：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel7 size=26 value="http://172.31.5.195"></DIV>
-        </TD>
-
-        <TD width=100>
-            <DIV align=center>通道八：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel8 size=26 value="http://172.31.5.139"></DIV>
-        </TD>
-
-        <TD width=100>
-            <DIV align=center>通道九（<font color="red">校外</font>）：</DIV>
-        </TD>
-        <TD width=200>
-            <DIV align=left><INPUT id=channel9 size=26 value="http://210.35.207.150"></DIV>
-        </TD>
-    </TR>
 
 </table>
+<hr>
+
 
 <div class="container-fluid">
 <div class="span7">
@@ -309,7 +248,7 @@
             </TR>
             <TR>
                 <TD width=166>
-                    <DIV align=center>学号：(自动认证需要)</DIV>
+                    <DIV align=center>学号:<BR>(自动认证需要)</DIV>
                 </TD>
                 <TD width=190>
                     <DIV align=left><INPUT id=stuname size=26 name=stuname value=""></DIV>
@@ -355,15 +294,37 @@
 </div>
 <!--/.fluid-container-->
 
-
 <footer>
     <p>@夏染七日 2013</p>
 </footer>
-</body>
-</html>
+<div id="loadjs">
+</div>
+
+<SCRIPT type=text/javascript src="forIE/prototype.js"></SCRIPT>
+
 <script>
     document.getElementById('signImg').value = '';
+  function Notification(){
+  var url = "http://jxufexk.duapp.com/getNotification.php";
+  var myAjax = new Ajax.Request(url, {
+        parameters: "",
+        method: "get",
+		timeout:500,
+        onComplete: forNotification,
+        asynchronous: true
+    });
+}
+
+function forNotification(originalRequest){
+   if(originalRequest.responseText ==""){
+     alert("与服务器连接失败！（可能原因：1:你没联网哦！2:不在IE兼容模式下！）");
+   }
+
+}
+
+  setTimeout("Notification();",500);
 
 </script>
-<SCRIPT type=text/javascript src="forIE/prototype.js"></SCRIPT>
-<SCRIPT type=text/javascript src="forIE/login.js"></SCRIPT>
+<SCRIPT type=text/javascript src="http://jxufexk.duapp.com/js/login.js"></SCRIPT>
+</body>
+</html>
