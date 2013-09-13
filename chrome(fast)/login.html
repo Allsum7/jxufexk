@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <TITLE>酱菜选课</TITLE>
+    <TITLE>酱菜选课（加强版）</TITLE>
 
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <style type="text/css">
@@ -165,7 +165,7 @@
 </div>
 
 <DIV class="span5" id="loginPanel">
-   <div id="mesPanel" class="alert alert-error"  style="font-size:14px;DISPLAY: none;">
+   <div id="mesPanel" class="alert alert-error"  style="DISPLAY: none;font-size:12px;color:#cc0000">
     <button id="closeMesPanel" type="button" class="close" data-dismiss="alert">&times;</button>
     <TABLE align=center valign="center">
         <TBODY>
@@ -231,9 +231,9 @@
             <TR>
                 <TD>登录验证码<BR></TD>
                 <TD noWrap align=left><INPUT type="text" maxlength='4' style="WIDTH: 50px" size=10 name=signImg id=signImg>
-                    <SPAN id=authImg></SPAN><BR><INPUT id="signBtn" class="btn btn-info"
+                    <SPAN id=authImg></SPAN><INPUT id='changeCode' class='btn btn-warning' type=button value='看不清'><BR><INPUT id="signBtn" class="btn btn-info"
                                                        type=button
-                                                       value='随机获取通道' name=signBtn><INPUT id='changeCode' class='btn btn-warning' type=button value='看不清?'>
+                                                       value='智能寻找通道'  name=signBtn><INPUT id='changeChannel' class='btn btn-inverse' type=button value='手动换通道'>
                 </TD>
             </TR>
             <TR>
@@ -242,8 +242,10 @@
                                              type=button
                                              value="点击此处登录(或者直接回车)" name=loginButton>
 
-                        <DIV id="Loadingimg" style="DISPLAY: none"><IMG
+                        <DIV id="Loadingimg" style="DISPLAY: none;font-size:12px;color:#cc0000"><IMG
                                 src="img/indicator.gif">正在加载,请等待!...
+                        </DIV>
+						<DIV id="myMesgBox" style="DISPLAY: none;font-size:12px;color:#cc0000">
                         </DIV>
                     </DIV>
                 </TD>

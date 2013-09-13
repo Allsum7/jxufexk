@@ -4,7 +4,8 @@ var channel =""; //当前通道
 var isAutoIdentify = true;
 var isAutoSelectCourse = false;
 var autoSelectCourseForm = {};
-var isFindAChannel  = false;
+var isStopFinding  = false;
+var currentJ =0;
 
     //ajax 全局事件
 	$(document).ajaxStart(function(){
@@ -31,28 +32,51 @@ function myAjax(method, url, isAsync, parameters, channelI,callback) {
     });
 }
 
-function findAChannel() {      //随机选择一个通道,这里可以优化，但是考虑到服务器的承受能力不建议那么做
+function findAGoodChannel(){
+    var url = 'loginCode.jsp';
+	for(var i=0;i<channels.length;i++){
+	   if(isStopFinding){
+		  //$("#signBtn").disabled = false;
+		  return;
+       }
+	   currentJ = i;
+	   channel  = channels[i];
+	   myAjax("get",channel+url,false,"",currentJ+1,forAChannel);
+	}
+	if(!isStopFinding){  //如果一遍下来全满了，就随机找一个通道
+	   $("#myMesgBox").html("唉！所有通道都满啦！(@^_^@)所以帮你随机选择了一个，或者你可以再试试？");
+	   $("#myMesgBox").show();
+	   randomAChannel();
+	}
+}
+
+function randomAChannel() {      //随机选择一个通道
     var url = 'loginCode.jsp';
     var randomI = parseInt(Math.random() * (channels.length - 1));
     currentJ = randomI;
     channel = channels[randomI];
     //alert("当前使用通道:" + channel);
-    myAjax("post",channel+url,true,"",currentJ+1,forAChannel);
+    myAjax("get",channel+url,true,"",currentJ+1,forAChannel);  //currentJ+1  表示显示的通道序号 从1开始
     $("#signBtn").disabled = false;
 }
-function forAChannel(channelI,data) {
 
-    if (data == "") {
+function forAChannel(channelI,data) {
+    
+    if (data == "") {  //表示这个通道没满！
         channel = channels[currentJ];
-        isFindAChannel = true;
+        isStopFinding = true;
+		$("#myMesgBox").html(" (*^__^*)恭喜你！RP不错！一下就找到了一个没满的通道，赶紧填验证码");
+	    $("#myMesgBox").show();
+		document.getElementById("signBtn").disabled = true;
         $("#authImg").html("<img id='loginImg' src='" + channel + 
 		"loginSign.jsp' border=0>");
                                                        
     }
     else {
+	    document.getElementById("signBtn").disabled = false;
         $("#authImg").html("<img id='loginImg' src='" + channel + 
-		"loginSign.jsp' border=0><INPUT id='changeCode' class='btn btn-warning' type=button value=我变！>");
-        $("#codePanel").html("<tr><td colspan='2'><span style='color:red'>随机获取到了通道"+channelI+"但人数已满!请重新选择通道!</span></td></tr>");
+		"loginSign.jsp' border=0>");
+        $("#codePanel").html("<tr><td colspan='2'><span style='font-size:12px;color:#cc0000'>随机获取到了通道"+channelI+",但这个通道人数已满!建议重新选择通道!</span></td></tr>");
     }
 
 }
@@ -183,8 +207,8 @@ function changeBox() {
         localStorage.setItem("ecardNum",loginForm.username.value) ;
         localStorage.setItem("ecardPwd",loginForm.password.value) ;
         localStorage.setItem("stuNum",loginForm.stuname.value) ;
-        $('#signBtn').disabled = true;
-        findAChannel();
+        document.getElementById("signBtn").disabled = true;
+		findAGoodChannel();
 
     }
 }
@@ -271,6 +295,11 @@ $("#signBtn").bind("click",function(){
     changeBox();
 });
 
+$("#changeChannel").bind("click",function(){
+    document.getElementById("signBtn").disabled = false;
+    randomAChannel();
+});
+
 $("#closeTips").bind("click",function(){
     $("#myTips").fadeOut("slow");
 });
@@ -280,6 +309,7 @@ $("#closeMesPanel").bind("click",function(){
 });
 
 $("#loginBtn").bind("click",function(){
+    document.getElementById("signBtn").disabled = false;
     checkForm();
 });
 $("#changeCode").bind("click",function(){
@@ -296,7 +326,14 @@ function  readLocalStore(){
     $("#username").val(ecardNum);
     $("#password").val(ecardPwd);
     $("#stuname").val(stuNum);
+	if(ecardNum!=null&&ecardPwd!=null&&stuNum!=null){
+	   randomAChannel();// 如果信息已经有了就直接随机一个通道 
+	   $("#signImg").focus();
+	}
+	else{
+	   $("#username").focus();
+	}
 }
-
 readLocalStore();
+
 
