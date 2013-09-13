@@ -39,7 +39,7 @@
 <table class="table" width=300 align=center valign="center">
     <TR>
         <TD >
-            <DIV align=center><font color="red">自定义选项：(已经开启自动认证模式)<font></DIV>
+            <DIV align=center><span class="badge badge-warning">自定义选项：(默认只开启自动认证不开启自动选课模式)</span></DIV>
         </TD>
         <TD >
             
@@ -48,7 +48,20 @@
 </table>
 
 <div class="container-fluid">
-<div id ="autoSelect" class="span4" style="display:none ;">
+
+<div class="span4" id="showText" >
+<h3>什么是自动选课模式？</h3>
+<blockquote class="pull-left" >
+  <p>1:自动选课模式下软件会在你成功登陆系统后按照你预先填好的选课表自动帮你选课，解放你的双手！</p>
+  <br>
+  <p>2:这个模式选课就是<font style="color:red">秒杀</font>，对于需要选蛮多课程的同学<font style="color:red">强烈推荐!</font></p>
+  <p>3:这个模式<font style="color:red">默认不开启</font>>>>>>>></p>
+  <small> <cite title="酱菜选课客户端">酱菜选课客户端</cite>独创</small>
+</blockquote>
+<span id="openAuto" class="btn btn-danger">开启自动选课模式</span>
+</div>
+<div id ="autoSelect"  style="display:none ;">
+<button id="closeForm" type="button" class="close" data-dismiss="alert">&times;</button>
     <FORM id="autoSelectCourseForm" >
         <table class="table-bordered">
             <tr>
@@ -150,7 +163,8 @@
         </table>
     </FORM>
 </div>
-<DIV class="span9" id="loginPanel">
+
+<DIV class="span5" id="loginPanel">
     <TABLE id=mesPanel style="DISPLAY: none" align=center
            valign="center">
         <TBODY>
@@ -181,7 +195,7 @@
                     <DIV
                             style="FONT-SIZE: 24px; FONT-WEIGHT: bold"
                             align=center>登陆<font style="FONT-SIZE: 18px;color:red ;FONT-WEIGHT: normal" >
-								是否自动选课<INPUT  type="checkbox" id="isAutoSelectCourse"></font>
+								</font>
                            
                     </DIV>
                 </TD>
@@ -216,9 +230,9 @@
             <TR>
                 <TD>登录验证码<BR></TD>
                 <TD noWrap align=left><INPUT type="text" maxlength='4' style="WIDTH: 50px" size=10 name=signImg id=signImg>
-                    <SPAN id=authImg></SPAN><INPUT id='changeCode' class='btn btn-warning' type=button value=我变！><BR><INPUT id="signBtn" class="btn btn-info"
+                    <SPAN id=authImg></SPAN><BR><INPUT id="signBtn" class="btn btn-info"
                                                        type=button
-                                                       value=随机获取通道和验证码 name=signBtn>
+                                                       value='随机获取通道' name=signBtn><INPUT id='changeCode' class='btn btn-warning' type=button value='只换验证码'>
                 </TD>
             </TR>
             <TR>
@@ -243,8 +257,9 @@
 
 </div>
 
-<div align=left style="color:red;font-size:14px">
-      <p>Tips:</p>
+<div  id="myTips" class="alert alert-error" align="left" style="font-size:14px">
+  <button id="closeTips" type="button" class="close" data-dismiss="alert">&times;</button>
+      <p>可能你需要留意下这里:</p>
 	  <p>1:如果选择了自动选课模式，那么预选课表至少要填一条！</p>
 	  <p>2:如果显示人数已满可以不要改变验证码继续按回车，这样更容易挤进去，慢慢体会你就懂了！</p>
       
