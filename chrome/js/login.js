@@ -97,10 +97,13 @@ function showResponse2(channelI,data) {
         ttt = ttt.replace(/&nbsp;/g, "");
         $('#tips').html(ttt);
         $("#tips").show();
+        loginForm.loginButton.disabled=false;
     }
     else {
         $('#tips').html(data);
         $("#tips").show();
+        loginForm.loginButton.disabled=false;
+        
     }
 
 }
@@ -116,7 +119,7 @@ function checkPermit() {
 }
 function showResponse3(channelI,data) {
 
-    if (data.replace("所有条件均符合选课条件") != null) {     //可改
+    if (data.match("所有条件均符合选课条件") != null) {     //可改
         var url = "./studentSelectSubject.htm";
         chrome.extension.getBackgroundPage().Gobal_currentChannel = channel;
         if (isAutoSelectCourse) {
@@ -129,6 +132,13 @@ function showResponse3(channelI,data) {
                 console.log(response.farewell);
 	    });
         //window.location.href = url;
+    }
+    else{
+    	var ttt = data.replace(/<\/?.+?>/g, "");    //去掉得到的html标签
+        ttt = ttt.replace(/&nbsp;/g, "");
+        $('#tips').html(ttt);
+        $("#tips").show();
+        loginForm.loginButton.disabled=false;
     }
 }
 
