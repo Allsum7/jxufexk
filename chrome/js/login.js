@@ -2,10 +2,25 @@ var channels = chrome.extension.getBackgroundPage().Gobal_channels; //获取得�
 var isInSchool =  chrome.extension.getBackgroundPage().Gobal_isInSchool; //获取是否在校内
 var channel =""; //当前通道
 var isAutoIdentify = true;
-var isAutoSelectCourse = "";
+var isAutoSelectCourse = false;
 var autoSelectCourseForm = {};
 var isFindAChannel  = false;
 
+ $("#loading").ajaxStart(function(){
+   $(this).show();
+ });
+ $("#Loadingimg").ajaxSend(function(evt, request, settings){
+   $(this).append("<li>开始请求: " + settings.url + "</li>");
+ });
+  $("#Loadingimg").ajaxSuccess(function(evt, request, settings){
+   $(this).append("<li>请求成功!</li>");
+   $(this).hide();
+ });
+ 
+ $("#Loadingimg").ajaxError(function(event,request, settings){
+     $(this).append("<li>出错页面:" + settings.url + "</li>");
+});
+	
 function myAjax(method, url, isAsync, parameters, channelI,callback) {
 
     $.ajax({
@@ -97,13 +112,11 @@ function showResponse2(channelI,data) {
         ttt = ttt.replace(/&nbsp;/g, "");
         $('#tips').html(ttt);
         $("#tips").show();
-        loginForm.loginButton.disabled=false;
+		loginForm.loginButton.disabled=false;
     }
     else {
         $('#tips').html(data);
         $("#tips").show();
-        loginForm.loginButton.disabled=false;
-        
     }
 
 }
@@ -118,7 +131,7 @@ function checkPermit() {
 
 }
 function showResponse3(channelI,data) {
-
+ 
     if (data.match("所有条件均符合选课条件") != null) {     //可改
         var url = "./studentSelectSubject.htm";
         chrome.extension.getBackgroundPage().Gobal_currentChannel = channel;
@@ -133,13 +146,13 @@ function showResponse3(channelI,data) {
 	    });
         //window.location.href = url;
     }
-    else{
-    	var ttt = data.replace(/<\/?.+?>/g, "");    //去掉得到的html标签
+	else {
+	    var ttt = data.replace(/<\/?.+?>/g, "");    //去掉得到的html标签
         ttt = ttt.replace(/&nbsp;/g, "");
         $('#tips').html(ttt);
         $("#tips").show();
-        loginForm.loginButton.disabled=false;
-    }
+		loginForm.loginButton.disabled=false;
+	}
 }
 
 //3.结束-------------------------------------------------------------------------
@@ -190,21 +203,24 @@ function formatCourses(str) {
 
 function checkForm() {
 
-
-    isAutoSelectCourse = document.getElementById("isAutoSelectCourse").checked;
 	if(isAutoSelectCourse){
-    var autoSelectCourseFormStr = $("#autoSelectCourseForm").serialize();  //先序列化
-    //alert(autoSelectCourseFormStr);
-    autoSelectCourseForm  = new formatCourses(autoSelectCourseFormStr);  //再格式化成对象数组
-    
-    for (var i = 1; i <= 5; i++) {     //保存自动选课表
-
-        if (autoSelectCourseForm["courseId" + i] != ""&& autoSelectCourseForm["classId" + i]=="") {
-            alert(autoSelectCourseForm["courseId" + i]+"的班号为空哦！请重新填写！");
-			return;
-        }
-
-    }
+		var autoSelectCourseFormStr = $("#autoSelectCourseForm").serialize();  //先序列化
+		//alert(autoSelectCourseFormStr);
+		autoSelectCourseForm  = new formatCourses(autoSelectCourseFormStr);  //再格式化成对象数组
+		var flagForAllEmpty = false;
+		for (var i = 1; i <= 5; i++) {     //保存自动选课表
+			if (autoSelectCourseForm["courseId" + i] != ""){
+				flagForAllEmpty = true; //表示不全为空
+				if(autoSelectCourseForm["classId" + i]=="") {
+					alert(autoSelectCourseForm["courseId" + i]+"的班号为空哦！请重新填写！");
+					return;
+				}
+			}
+		}
+		if(!flagForAllEmpty){
+		   alert("温馨提醒:由于发现你开启了自动选课模式，但是提交的预选课表是空的，不建议你酱紫！这样会使你只有五分钟的选课时间！如果不想自动选课，请点击预选课表右上角那个小叉叉哦！");
+		   return;
+		}
 	}
     //alert(autoSelectCourseForm["courseId1"]);
 
@@ -234,28 +250,32 @@ document.onkeydown = function () {  //监听键盘回车事件
     }
 }
 
-$("#isAutoSelectCourse").bind("click",function(){
-    if($("#isAutoSelectCourse").is(":checked")){
-      alert("选中了自动选课模式，需要填写左下角那张预选课表，而且需要注意的是，为了公平起见，自动选课模式，进去只有五分钟的选课时间" +
+$("#openAuto").bind("click",function(){
+    alert("选中了自动选课模式，需要填写左下角那张预选课表，而且需要注意的是，为了公平起见，自动选课模式，进去只有五分钟的选课时间" +
           "，时间到了会自动退出！！需要重新登陆哦！详细问题见[常见问题及回答]");
+	  isAutoSelectCourse = true;
 	  $("#loginPanel").attr("class","span5");
-	  $("#autoSelect").fadeIn("slow");;
+	  $("#autoSelect").attr("class","span4");
+	  $("#showText").attr("class"," ");
+	  $("#showText").hide();
+	  $("#autoSelect").fadeIn("slow");
 	  //$("#autoSelect").show();
-    }
-	else{
-	  //$("#autoSelect").hide();
-	  $("#autoSelect").slideUp("fast");;
-	  $("#loginPanel").attr("class","span9");
-	 
-	}
     
+});
+$("#closeForm").bind("click",function(){
+      isAutoSelectCourse = false;
+      $("#loginPanel").attr("class","span9");
+      $("#autoSelect").hide();
+	  
 });
 
 $("#signBtn").bind("click",function(){
     changeBox();
 });
 
-
+$("#closeTips").bind("click",function(){
+    $("#myTips").fadeOut("slow");
+});
 
 $("#loginBtn").bind("click",function(){
     checkForm();
