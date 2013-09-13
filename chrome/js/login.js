@@ -6,21 +6,18 @@ var isAutoSelectCourse = false;
 var autoSelectCourseForm = {};
 var isFindAChannel  = false;
 
- $("#loading").ajaxStart(function(){
-   $(this).show();
- });
- $("#Loadingimg").ajaxSend(function(evt, request, settings){
-   $(this).append("<li>开始请求: " + settings.url + "</li>");
- });
-  $("#Loadingimg").ajaxSuccess(function(evt, request, settings){
-   $(this).append("<li>请求成功!</li>");
-   $(this).hide();
- });
- 
- $("#Loadingimg").ajaxError(function(event,request, settings){
-     $(this).append("<li>出错页面:" + settings.url + "</li>");
-});
-	
+    //ajax 全局事件
+	$(document).ajaxStart(function(){
+		$("#Loadingimg").show();
+	})
+	.ajaxSuccess(function(evt, request, settings){
+		$("#Loadingimg").hide();
+	})
+    .ajaxError(function(event,request, settings){
+		$("#Loadingimg").html("啊哦！网络请求出错!可能是服务器崩溃咯！");
+	});
+
+
 function myAjax(method, url, isAsync, parameters, channelI,callback) {
 
     $.ajax({
@@ -262,6 +259,7 @@ $("#openAuto").bind("click",function(){
 	  //$("#autoSelect").show();
     
 });
+
 $("#closeForm").bind("click",function(){
       isAutoSelectCourse = false;
       $("#loginPanel").attr("class","span9");
@@ -275,6 +273,10 @@ $("#signBtn").bind("click",function(){
 
 $("#closeTips").bind("click",function(){
     $("#myTips").fadeOut("slow");
+});
+
+$("#closeMesPanel").bind("click",function(){
+    $("#mesPanel").fadeOut("fast");
 });
 
 $("#loginBtn").bind("click",function(){

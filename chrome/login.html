@@ -165,8 +165,9 @@
 </div>
 
 <DIV class="span5" id="loginPanel">
-    <TABLE id=mesPanel style="DISPLAY: none" align=center
-           valign="center">
+   <div id="mesPanel" class="alert alert-error"  style="font-size:14px;DISPLAY: none;">
+    <button id="closeMesPanel" type="button" class="close" data-dismiss="alert">&times;</button>
+    <TABLE align=center valign="center">
         <TBODY>
         <TR align=left>
             <TD align=left><SPAN id=tips
@@ -185,7 +186,7 @@
         </TR>
         </TBODY>
     </TABLE>
-	
+	</div>
 	<br>
     <FORM  id=loginForm>
         <TABLE  height="260" align=center valign="center">
@@ -232,7 +233,7 @@
                 <TD noWrap align=left><INPUT type="text" maxlength='4' style="WIDTH: 50px" size=10 name=signImg id=signImg>
                     <SPAN id=authImg></SPAN><BR><INPUT id="signBtn" class="btn btn-info"
                                                        type=button
-                                                       value='随机获取通道' name=signBtn><INPUT id='changeCode' class='btn btn-warning' type=button value='只换验证码'>
+                                                       value='随机获取通道' name=signBtn><INPUT id='changeCode' class='btn btn-warning' type=button value='看不清?'>
                 </TD>
             </TR>
             <TR>
@@ -241,7 +242,7 @@
                                              type=button
                                              value="点击此处登录(或者直接回车)" name=loginButton>
 
-                        <DIV id=Loadingimg style="DISPLAY: none"><IMG
+                        <DIV id="Loadingimg" style="DISPLAY: none"><IMG
                                 src="img/indicator.gif">正在加载,请等待!...
                         </DIV>
                     </DIV>
