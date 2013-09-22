@@ -303,6 +303,9 @@ function checkForm()
     else
     {
         $('#mesPanel').show();
+		localStorage.setItem("ecardNum", loginForm.username.value);
+        localStorage.setItem("ecardPwd", loginForm.password.value);
+        localStorage.setItem("stuNum", loginForm.stuname.value);
         loginForm.loginButton.disabled = true;
         $('#tips').css("display", "none");
         searchFruit();
