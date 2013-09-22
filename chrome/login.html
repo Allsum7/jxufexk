@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <TITLE>酱菜选课</TITLE>
+    <title>酱菜选课</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <style type="text/css">
@@ -17,262 +17,321 @@
     </style>
 </head>
 <body>
-
-<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-        <div class="container-fluid">
-            <a class="brand" href="#">酱菜选课客户端（Chrome）</a>
+      <div class="container-fluid">
+        <a class="brand" href="#">酱菜选课客户端（Chrome）</a>
 
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">
-                    <a href="qa.html" >常见问题及回答</a>
-                </p>
-             
-            </div>
-            <!--/.nav-collapse -->
-        </div>
+        <div class="nav-collapse collapse">
+          <p class="navbar-text pull-right"><a href="qa.html">常见问题及回答</a></p>
+        </div><!--/.nav-collapse -->
+      </div>
     </div>
-</div>
+  </div><!-- 确认是否在校内--><!-- Modal -->
 
-<div class="container-fluid" >
-<div class="hero-unit"  style="background-color: #99cccc;width:800px; margin-left:auto; margin-right:auto;">
-<table class="table" width=300 align=center valign="center">
-    <TR>
-        <TD >
-            <DIV align=center><span class="badge badge-warning">自定义选项：(默认只开启自动认证不开启自动选课模式)</span></DIV>
-        </TD>
-        <TD >
-            
-        </TD>
-    </TR>
-</table>
+  <div id="myModal" class="modal hide fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">你确定开启自动选课模式吗？</h3>
+    </div>
 
-<div class="container-fluid">
+    <div id="showTextForAuto" class="modal-body"></div>
 
-<div class="span4" id="showText" >
-<h3>什么是自动选课模式？</h3>
-<blockquote class="pull-left" >
-  <p>1:自动选课模式下软件会在你成功登陆系统后按照你预先填好的选课表自动帮你选课，解放你的双手！</p>
-  <br>
-  <p>2:这个模式选课就是<font style="color:red">秒杀</font>，对于需要选蛮多课程的同学<font style="color:red">强烈推荐!</font></p>
-  <p>3:这个模式<font style="color:red">默认不开启</font>>>>>>>></p>
-  <small> <cite title="酱菜选课客户端">酱菜选课客户端</cite>独创</small>
-</blockquote>
-<span id="openAuto" class="btn btn-danger">开启自动选课模式</span>
-</div>
-<div id ="autoSelect"  style="display:none ;">
-<button id="closeForm" type="button" class="close" data-dismiss="alert">&times;</button>
-    <FORM id="autoSelectCourseForm" >
-        <table class="table-bordered">
-            <tr>
+    <div class="modal-footer">
+      <button id="autoOk" class="btn btn-success" data-dismiss="modal" aria-hidden="true">确定</button> <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">取消</button>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="hero-unit" style="background-color: #99cccc;width:800px; margin-left:auto; margin-right:auto;">
+      <table class="table" width="300" align="center" valign="center">
+        <tr>
+          <td>
+            <div align="center">
+              <span class="badge badge-warning">自定义选项：(默认只开启自动认证不开启自动选课模式)</span>
+            </div>
+          </td>
+
+          <td></td>
+        </tr>
+      </table>
+
+      <div class="container-fluid">
+        <div class="span4" id="showText">
+          <h3>什么是自动选课模式？</h3>
+
+          <blockquote class="pull-left">
+            <p>1:自动选课模式下软件会在你成功登陆系统后按照你预先填好的选课表自动帮你选课，解放你的双手！</p><br />
+
+            <p>2:这个模式选课就是<font style="color:red">秒杀</font>，对于需要选蛮多课程的同学<font style="color:red">强烈推荐!</font></p>
+
+            <p>3:这个模式<font style="color:red">默认不开启</font>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</p><small><cite title="酱菜选课客户端">酱菜选课客户端</cite>独创</small>
+          </blockquote><span id="openAuto" class="btn btn-danger">开启自动选课模式</span>
+        </div>
+
+        <div id="autoSelect" style="display:none ;">
+          <button id="closeForm" type="button" class="close" data-dismiss="alert">&times;</button>
+
+          <form id="autoSelectCourseForm">
+            <table class="table-bordered">
+              <tr>
                 <td colspan="5">
-                    <div align="center"  style="FONT-SIZE: 18px; FONT-WEIGHT: bold">预选课表(自动选课需要)</div>
+                  <div align="center" style="FONT-SIZE: 18px; FONT-WEIGHT: bold">
+                    预选课表(自动选课需要)
+                  </div>
                 </td>
-            </tr>
-            <tr>
+              </tr>
+
+              <tr>
                 <td>
-                    <div align="center">序号</div>
+                  <div align="center">
+                    序号
+                  </div>
                 </td>
+
                 <td>
-                    <div align="center">课程代码<br><font color="red">*</font></div>
+                  <div align="center">
+                    课程代码<br />
+                    <font color="red">*</font>
+                  </div>
                 </td>
+
                 <td>
-                    <div align="center">班号<br><font color="red">*</font></div>
+                  <div align="center">
+                    班号<br />
+                    <font color="red">*</font>
+                  </div>
                 </td>
+
                 <td>
-                    <div align="center">是否要<br>教材</div>
+                  <div align="center">
+                    是否要<br />
+                    教材
+                  </div>
                 </td>
-               
-            </tr>
-            <tr>
+              </tr>
+
+              <tr>
                 <td>
-                    <div align="center">1</div>
+                  <div align="center">
+                    1
+                  </div>
                 </td>
+
                 <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=courseId1 name=courseId1 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=classId1 name=classId1 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT  type="checkbox" id=isNeedBook1 name=isNeedBook1></td>
-               
-            </tr>
-            <tr>
-                <td>
-                    <div align="center">2</div>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="courseId1" name="courseId1" value="" />
                 </td>
+
                 <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=courseId2 name=courseId2 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=classId2 name=classId2 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT  type="checkbox" id=isNeedBook2 name=isNeedBook2></td>
-                
-            </tr>
-            <tr>
-                <td>
-                    <div align="center">3</div>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="classId1" name="classId1" value="" />
                 </td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=courseId3 name=courseId3 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=classId3 name=classId3 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="checkbox" id=isNeedBook3 name=isNeedBook3></td>
-               
 
-            </tr>
-            <tr>
                 <td>
-                    <div align="center">4</div>
+                  <div align="center"></div><input type="checkbox" id="isNeedBook1" name="isNeedBook1" />
                 </td>
+              </tr>
+
+              <tr>
                 <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=courseId4 name=courseId4 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=classId4 name=classId4 value=""></td>
-                <td>
-                    <div align="center"></div>
-                    <INPUT type="checkbox" id=isNeedBook4 name=isNeedBook4></td>
-                
-            </tr>
-            <tr>
-                <td>
-                    <div align="center">5</div>
+                  <div align="center">
+                    2
+                  </div>
                 </td>
+
                 <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=courseId5 name=courseId5 value=""></td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="courseId2" name="courseId2" value="" />
+                </td>
+
                 <td>
-                    <div align="center"></div>
-                    <INPUT type="text" style="WIDTH: 80px" id=classId5 name=classId5 value=""></td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="classId2" name="classId2" value="" />
+                </td>
+
                 <td>
-                    <div align="center"></div>
-                    <INPUT type="checkbox" id=isNeedBook5 name=isNeedBook5></td>
-               
-            </tr>
-        </table>
-    </FORM>
-</div>
+                  <div align="center"></div><input type="checkbox" id="isNeedBook2" name="isNeedBook2" />
+                </td>
+              </tr>
 
-<DIV class="span5" id="loginPanel">
-   <div id="mesPanel" class="alert alert-error"  style="font-size:14px;DISPLAY: none;">
-    <button id="closeMesPanel" type="button" class="close" data-dismiss="alert">&times;</button>
-    <TABLE align=center valign="center">
-        <TBODY>
-        <TR align=left>
-            <TD align=left><SPAN id=tips
-                                 style=" DISPLAY: none; WIDTH: 310px; align:left"></SPAN>
-            </TD>
-        </TR>
-        <TR align=left>
-            <TD align=left><SPAN id=tips2
-                                 style=" DISPLAY: none; WIDTH: 310px; align:left"></SPAN>
-            </TD>
-        </TR>
-        <TR align=left>
-            <TD align=left><SPAN id=tips3
-                                 style=" DISPLAY: none; WIDTH: 310px; align:left"></SPAN>
-            </TD>
-        </TR>
-        </TBODY>
-    </TABLE>
-	</div>
-	<br>
-    <FORM  id=loginForm>
-        <TABLE  height="260" align=center valign="center">
-            <TBODY>
-            <TR>
-                <TD colSpan=2 align=center>
-                    <DIV
-                            style="FONT-SIZE: 24px; FONT-WEIGHT: bold"
-                            align=center>登陆<font style="FONT-SIZE: 18px;color:red ;FONT-WEIGHT: normal" >
-								</font>
-                           
-                    </DIV>
-                </TD>
-            </TR>
-            <TR>
-                <TD width=166>
-                    <DIV align=center>一卡通卡号：</DIV>
-                </TD>
-                <TD width=190>
-                    <DIV align=left><INPUT id=username type="text" size=26 name=username value=""></DIV>
-                </TD>
-            </TR>
-            <TR>
-                <TD width=166>
-                    <DIV align=center>一卡通密码：</DIV>
-                </TD>
-                <TD width=190>
-                    <DIV align=left><INPUT id=password size=26 type=password name=password value="">
-                    </DIV>
-                </TD>
-            </TR>
-            <TR>
-                <TD width=166>
-                    <DIV align=center>学号：(自动认证需要)</DIV>
-                </TD>
-                <TD width=190>
-                    <DIV align=left><INPUT id=stuname size=26 type="text" name=stuname value=""></DIV>
+              <tr>
+                <td>
+                  <div align="center">
+                    3
+                  </div>
+                </td>
 
-                </TD>
-            </TR>
-            <DIV id=codePanel></DIV>
-            <TR>
-                <TD>登录验证码<BR></TD>
-                <TD noWrap align=left><INPUT type="text" maxlength='4' style="WIDTH: 50px" size=10 name=signImg id=signImg>
-                    <SPAN id=authImg></SPAN><BR><INPUT id="signBtn" class="btn btn-info"
-                                                       type=button
-                                                       value='随机获取通道' name=signBtn><INPUT id='changeCode' class='btn btn-warning' type=button value='看不清?'>
-                </TD>
-            </TR>
-            <TR>
-                <TD colSpan=2>
-                    <DIV align=center><INPUT style="WIDTH: 400px" id="loginBtn" class="btn btn-success"
-                                             type=button
-                                             value="点击此处登录(或者直接回车)" name=loginButton>
+                <td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="courseId3" name="courseId3" value="" />
+                </td>
 
-                        <DIV id="Loadingimg" style="DISPLAY: none"><IMG
-                                src="img/indicator.gif">正在加载,请等待!...
-                        </DIV>
-                    </DIV>
-                </TD>
-            </TR>
-            </TBODY>
-        </TABLE>
-    </FORM>
+                <td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="classId3" name="classId3" value="" />
+                </td>
 
-   
-</DIV>
+                <td>
+                  <div align="center"></div><input type="checkbox" id="isNeedBook3" name="isNeedBook3" />
+                </td>
+              </tr>
 
+              <tr>
+                <td>
+                  <div align="center">
+                    4
+                  </div>
+                </td>
 
-</div>
+                <td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="courseId4" name="courseId4" value="" />
+                </td>
 
-<div  id="myTips" class="alert alert-error" align="left" style="font-size:14px">
-  <button id="closeTips" type="button" class="close" data-dismiss="alert">&times;</button>
-      <p>可能你需要留意下这里:</p>
-	  <p>1:如果选择了自动选课模式，那么预选课表至少要填一条！</p>
-	  <p>2:如果显示人数已满可以不要改变验证码继续按回车，这样更容易挤进去，慢慢体会你就懂了！</p>
-      
-</div>
- <p style="font-size:14px">@<a href="http://weibo.com/zluan/">夏染七日</a> 2013-你来的今年</p>
-</div>
-<!-- /hero-->
-</div>
+                <td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="classId4" name="classId4" value="" />
+                </td>
 
-<!--/.fluid-container-->
+                <td>
+                  <div align="center"></div><input type="checkbox" id="isNeedBook4" name="isNeedBook4" />
+                </td>
+              </tr>
 
+              <tr>
+                <td>
+                  <div align="center">
+                    5
+                  </div>
+                </td>
+
+                <td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="courseId5" name="courseId5" value="" />
+                </td>
+
+                <td>
+                  <div align="center"></div><input type="text" style="WIDTH: 80px" id="classId5" name="classId5" value="" />
+                </td>
+
+                <td>
+                  <div align="center"></div><input type="checkbox" id="isNeedBook5" name="isNeedBook5" />
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+
+        <div class="span5" id="loginPanel">
+          <div id="mesPanel" class="alert alert-error" style="DISPLAY: none;font-size:12px;color:#cc0000">
+            <button id="closeMesPanel" type="button" class="close" data-dismiss="alert">&times;</button>
+
+            <table align="center" valign="center">
+              <tbody>
+                <tr align="left">
+                  <td align="left"><span id="tips" style=" DISPLAY: none; WIDTH: 310px; align:left"></span></td>
+                </tr>
+
+                <tr align="left">
+                  <td align="left"><span id="tips2" style=" DISPLAY: none; WIDTH: 310px; align:left"></span></td>
+                </tr>
+
+                <tr align="left">
+                  <td align="left"><span id="tips3" style=" DISPLAY: none; WIDTH: 310px; align:left"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div><br />
+
+          <form id="loginForm">
+            <div id="codePanel"></div>
+
+            <table height="260" align="center" valign="center">
+              <tbody>
+                <tr>
+                  <td colspan="2" align="center">
+                    <div style="FONT-SIZE: 24px; FONT-WEIGHT: bold" align="center">
+                      登陆<span id="showXnXwText" style="display:none" class="badge badge-warning"></span>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td width="166">
+                    <div align="center">
+                      一卡通卡号：
+                    </div>
+                  </td>
+
+                  <td width="190">
+                    <div align="left">
+                      <input id="username" type="text" size="26" name="username" value="" />
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td width="166">
+                    <div align="center">
+                      一卡通密码：
+                    </div>
+                  </td>
+
+                  <td width="190">
+                    <div align="left">
+                      <input id="password" size="26" type="password" name="password" value="" />
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td width="166">
+                    <div align="center">
+                      学号：(自动认证需要)
+                    </div>
+                  </td>
+
+                  <td width="190">
+                    <div align="left">
+                      <input id="stuname" size="26" type="text" name="stuname" value="" />
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>登录验证码<br /></td>
+
+                  <td nowrap="nowrap" align="left"><input type="text" maxlength='4' style="WIDTH: 50px" size="10" name="signImg" id="signImg" /> <span id="authImg"></span><input id='changeCode' class='btn btn-warning' type="button" value='看不清' /><br />
+                  <input id="signBtn" class="btn btn-info" type="button" value='随机获取通道和验证码' name="signBtn" /></td>
+                </tr>
+
+                <tr>
+                  <td colspan="2">
+                    <div align="center">
+                      <input style="WIDTH: 400px" id="loginBtn" class="btn btn-success" type="button" value="点击此处登录(或者直接回车)" name="loginButton" />
+
+                      <div id="Loadingimg" style="DISPLAY: none;font-size:12px;color:#cc0000">
+                        <img src="img/indicator.gif" />正在加载,请等待!...
+                      </div>
+
+                      <div id="myMesgBox" style="DISPLAY: none;font-size:12px;color:#cc0000"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+
+      <div id="myTips" class="alert alert-error" align="left" style="font-size:14px">
+        <button id="closeTips" type="button" class="close" data-dismiss="alert">&times;</button>
+
+        <p>可能你需要留意下这里:</p>
+
+        <p>1:如果选择了自动选课模式，那么预选课表至少要填一条！</p>
+
+        <p>2:如果显示人数已满可以不要改变验证码继续按回车，这样更容易挤进去，慢慢体会你就懂了！</p>
+      </div>
+
+      <p style="font-size:14px">@<a href="http://weibo.com/zluan/">夏染七日</a> 2013-你来的今年</p>
+    </div><!-- /hero-->
+  </div><!--/.fluid-container-->
+  <script type="text/javascript" src="js/jquery.js">
+</script><script type="text/javascript" src="js/bootstrap-modal.js">
+</script><script type="text/javascript" src="js/bootstrap-transition.js">
+</script><script type="text/javascript" src="js/login.js">
+</script>
 </body>
 </html>
-<SCRIPT type=text/javascript src="js/jquery.js"></SCRIPT>
-<SCRIPT type=text/javascript src="js/login.js"></SCRIPT>
