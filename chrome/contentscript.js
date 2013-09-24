@@ -1,117 +1,133 @@
 var channelIn = new Array(); //校内
 var channelOut = new Array(); //校外
+
+////////////////各种参数设置////////////////////////
 var userIsInSchool = true;
 var projectName = "酱菜选课（Chrome插件版）";
+var currentVersion = "0.2.3"; //当前版本号
 var inStr = "";
 var outStr = "";
-
 var channel = "";
 var autoSelectCourseForm = {}; //保存自动选课表的对象
 var isAutoSelect = false;
 var urlarg = "";
 var speed = 1000;
 var remainTime = 5 * 60 //为了公平起见   如果是自动选课模式只有5分钟选课时间
-    
-    
-    $.ajaxSetup(
-    {
-        timeout : 500
-    }
-    );
-
-if (window.location.href == "http://xk.jxufe.edu.cn/" || window.location.href == "http://xk.jxufe.cn/")
+$.ajaxSetup(
 {
-    var s = document.createElement("style");
-    s.id = "jxufexk";
-    s.type = "text/css";
-    s.textContent = "body{background-color:#99cccc;margin:auto;width:980px;text-align :center;}";
-    document.head.appendChild(s);
-    var trends_dom = document.createElement('div');
-    var bo = document.body; //获取body对象.
-    //动态插入到body中
-    bo.insertBefore(trends_dom, bo.firstChild);
-    //确认是否在校内 弹出对话框
-    $('<div id="forInOut" class="modal hide fade"  data-backdrop="static" data-keyboard="false" tabindex="100" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
-        '<div class="modal-header">' +
-        ' <h3 id="myModalLabel">你是在校内还是在校外？</h3>' +
-        '</div>' +
-        '<div id="showChannels" class="modal-body">' +
-        '</div>' +
-        '<div class="modal-footer">' +
-        ' <button id="isAllOk" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">判断正确直接进入</button>' +
-        ' <button id="isInSchool" class="btn  btn-success" data-dismiss="modal" aria-hidden="true">应该是校内</button>' +
-        ' <button id="isOutSchool" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">应该是校外</button>' +
-        '</div>' +
-        '</div>').appendTo(trends_dom);
-    getChannel();
-    isInSchool(channelIn[0]);
+    timeout : 500
 }
-else if (window.location.href.match("studentSelectSubject") != null)
-{ //匹配选课页面
-    showUI();
-    
-    $("#logoutBtn").bind("click", function ()
+);
+///////////////////////////////////////////
+
+/////////////一些接口/////////////////////////
+var checkUpdateUrl = "http://jxufexk.duapp.com/check-update.php";//云端检查更新页面
+var xkHomeUrl1 = "http://xk.jxufe.edu.cn/"; //学校选课主页
+var xkHomeUrl2 = "http://xk.jxufe.cn/"; //学校选课主页
+var logoutUrl = "lightSelectSubject/logout.jsp";
+///////////////////////////////////////////////////////
+
+forOnload();//入口函数
+function forOnload()
+{
+    if (window.location.href == xkHomeUrl1 || window.location.href == xkHomeUrl2)
     {
-        logout();
+        var s = document.createElement("style");
+        s.id = "jxufexk";
+        s.type = "text/css";
+        s.textContent = "body{background-color:#99cccc;margin:auto;width:980px;text-align :center;}";
+        document.head.appendChild(s);
+        var trends_dom = document.createElement('div');
+        var bo = document.body; //获取body对象.
+        //动态插入到body中
+        bo.insertBefore(trends_dom, bo.firstChild);
+        //确认是否在校内 弹出对话框
+        $('<div id="forInOut" class="modal hide fade"  data-backdrop="static" data-keyboard="false" tabindex="100" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+            '<div class="modal-header">' +
+            ' <h3 id="myModalLabel">你是在校内还是在校外？</h3>' +
+            '</div>' +
+            '<div id="showChannels" class="modal-body">' +
+            '</div>' +
+            '<div  id = "modal-footer" class="modal-footer">' +
+            ' <button id="isAllOk" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">判断正确直接进入</button>' +
+            ' <button id="isInSchool" class="btn  btn-success" data-dismiss="modal" aria-hidden="true">应该是校内</button>' +
+            ' <button id="isOutSchool" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">应该是校外</button>' +
+            '</div>' +
+            '</div>').appendTo(trends_dom);
+			
+		if(checkUpdate()){
+		    return;
+		};
+        getChannel();
+        isInSchool(channelIn[0]);
     }
-    );
-    
-    $("#reviseBtn").bind("click", function ()
-    { // 修正网页chrome的兼容性问题
-        if ($("table")[1].innerHTML.match("请完成教材选购") != null)
-        {
-            //alert( $("table tr:nth-child(3) td:nth-child(1)").text());
-            //alert($("table tr:nth-child(3) td:nth-child(3)").text());
-            var bookInput = document.getElementsByName("book");
-            bookInput[0].setAttribute("id", "book"); //chrome 严格区分getElementsByName 和getElementById  而ie不区分 所以导致不兼容！
-            //alert(bookInput[0].getAttribute("id"));
-            alert("'酱菜选课（chrome插件版）'已帮你了修正网页中对chrome内核的不兼容问题，请你重新选择是否要订购教材！谢谢！");
-        }
-        else
-        {
-            alert("不要顽皮哦！说了请到了确认是否教材选购那步再来点击我哦！否则是无效的啦！");
-        }
+    else if (window.location.href.match("studentSelectSubject") != null)
+    { //匹配选课页面
+        showUI();
         
+        $("#logoutBtn").bind("click", function ()
+        {
+            logout();
+        }
+        );
+        
+        $("#reviseBtn").bind("click", function ()
+        { // 修正网页chrome的兼容性问题
+            if ($("table")[1].innerHTML.match("请完成教材选购") != null)
+            {
+                //alert( $("table tr:nth-child(3) td:nth-child(1)").text());
+                //alert($("table tr:nth-child(3) td:nth-child(3)").text());
+                var bookInput = document.getElementsByName("book");
+                bookInput[0].setAttribute("id", "book"); //chrome 严格区分getElementsByName 和getElementById  而ie不区分 所以导致不兼容！
+                //alert(bookInput[0].getAttribute("id"));
+                alert("'酱菜选课（chrome插件版）'已帮你了修正网页中对chrome内核的不兼容问题，请你重新选择是否要订购教材！谢谢！");
+            }
+            else
+            {
+                alert("不要顽皮哦！说了请到了确认是否教材选购那步再来点击我哦！否则是无效的啦！");
+            }
+            
+        }
+        );
+        
+        chrome.extension.sendRequest(
+        {
+            getAuto : "yes"
+        }, function (response)
+        {
+            if (response.autoSelect)
+            {
+                isAutoSelect = true;
+                channel = response.currentChannel;
+                urlarg = response.courseForm;
+                //alert(channel+"  "+urlarg["courseId" + 1]);
+                autoSelectCourse();
+                remainT();
+                
+            }
+            
+        }
+        );
     }
-    );
+    else
+    {
+        location.href = xkHomeUrl1;
+    }
+    
+    var myaudio = document.getElementById("myaudio");
     
     chrome.extension.sendRequest(
     {
-        getAuto : "yes"
+        getPlay : true
     }, function (response)
-    {
-        if (response.autoSelect)
+    { //playAudio
+        if (response.playAudio)
         {
-            isAutoSelect = true;
-            channel = response.currentChannel;
-            urlarg = response.courseForm;
-            //alert(channel+"  "+urlarg["courseId" + 1]);
-            autoSelectCourse();
-            remainT();
-            
+            myaudio.play();
         }
-        
     }
     );
 }
-else
-{
-    location.href = "http://xk.jxufe.edu.cn";
-}
-
-var myaudio = document.getElementById("myaudio");
-
-chrome.extension.sendRequest(
-{
-    getPlay : true
-}, function (response)
-{ //playAudio
-    if (response.playAudio)
-    {
-        myaudio.play();
-    }
-}
-);
 
 function getChannel()
 { //从页面中得到目前开放的通道
@@ -138,6 +154,14 @@ function getChannel()
 
 function dealAfter(xnwStr, str, isIn)
 {
+    if (channelIn.length == 0 && channelOut.length == 0)
+    {
+        $("#myModalLabel").html("酱菜选课（chrome）插件版");
+        $("#showChannels").html("<p><font style='color:red'>检测不到有效通道，可能是这次选课还没开始，或者已经结束！</font></p>");
+        $("#modal-footer").html('<button  class="btn btn-success" data-dismiss="modal" aria-hidden="true">关闭</button>');
+        $('#forInOut').modal('show');
+        return;
+    }
     $("#showChannels").html("<p>自动匹配到了目前开放的通道列表,校内:" + channelIn.length + "个,校外:" + channelOut.length + "个<p>并检测到你现在在" + xnwStr + "选课," +
         "自动为你设置了" + xnwStr + "选课模式，祝你选课愉快^_^</p><p><font style='color:red'>如果发现校内校外判断不正确，请在手动修正！</font></p>");
     $('#forInOut').modal('show');
@@ -231,11 +255,50 @@ function isInSchool(url)
     );
 }
 
+function checkUpdate()
+{
+    var isUpdate = false;
+    $.ajax(
+    {
+        type : "get",
+        url : checkUpdateUrl,
+        data : "currentVersion=" + currentVersion + "&clientType=crx",
+        async : true,
+        dataType : "json",
+        success : function (data)
+        {
+            
+            var data = eval(data);
+            var serverVer = data[0].crxVersion;
+            var crxDownloadUrl = data[0].crxDownloadUrl;
+            var crxUpdateDate = data[0].crxUpdateDate;
+            if (serverVer != currentVersion)
+            { //需要更新
+                $("#myModalLabel").html("软件更新提醒");
+                $("#showChannels").html("<p><small>酱菜选课chrome插件版</small></p><p><font style='color:red'>当前版本号:v" + currentVersion + "  官网最新版本号:v" + serverVer + "</font></p>" +
+                    "<p>最新版更新日期:" + crxUpdateDate + "  最新版下载地址:<a class='btn btn-success' href='" + crxDownloadUrl + "'>点击下载!</a></p>");
+                $("#modal-footer").html('');
+                $('#forInOut').modal('show');
+                isUpdate  = true;
+            }
+        },
+        error : function ()
+        {
+            //
+        }
+        
+    }
+    );
+	if(isUpdate)
+      return true;
+	else return false;
+}
+
 //用于关闭SESSION---------------------------------------------
 function removeline()
 { //清除session
     
-    var url = 'lightSelectSubject/logout.jsp';
+    var url = logoutUrl;
     $.ajax(
     {
         type : "post",
@@ -252,7 +315,7 @@ function logout()
 { //退出
     removeline();
     alert("您已退出选课！");
-    window.location.href = "http://xk.jxufe.edu.cn";
+    window.location.href = xkHomeUrl1;
 }
 
 function remainT()

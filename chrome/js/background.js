@@ -24,7 +24,7 @@ function showLogin() {
 
 // 创建一个简单的文字通知：
 var successNotification = webkitNotifications.createNotification(
-  'http://jxufexk.duapp.com/getSuccessIcon.php',  // icon url - can be relative
+  'img/icon-48.png',  // icon url - can be relative
   '酱菜选课友情提示：',  // notification title
   '恭喜你！成功进入选课系统，进行选课！祝你选课愉快！'  // notification body text
 );

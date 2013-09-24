@@ -1,3 +1,4 @@
+////////////////各种参数设置////////////////////////
 var channels = chrome.extension.getBackgroundPage().Gobal_channels; //获取得到的通道列表
 var isInSchool = chrome.extension.getBackgroundPage().Gobal_isInSchool; //获取是否在校内
 var channel = ""; //当前通道
@@ -6,6 +7,18 @@ var isAutoSelectCourse = false;
 var autoSelectCourseForm = {};
 var isStopFinding = false;
 var currentJ = 0;
+//////////////////////////////////////////////////
+
+/////////////一些接口/////////////////////////
+var loginCodeUrl = 'loginCode.jsp'; // 用来检查通道人数是否已满，返回结果为空则表示未满，非空已满
+var certUrl = 'cert.jsp'; //用来认证信息的第一步
+var confirmStudentInfoUrl = 'confirmStudentInfo.jsp'; //用来确认学生个人信息
+var permissionUrl = 'permission.jsp'; //用来检查学生是否用权限选课，如未评教 ，未交学费等
+var loginSignUrl = 'loginSign.jsp'; //用来获取该通道的验证码
+var studentSelectSubjectUrl = "./studentSelectSubject.htm"; //选课界面
+var logoutUrl = "lightSelectSubject/logout.jsp"; //用来注销用户
+///////////////////////////////////////////////////////
+
 
 function myAjax(method, url, isAsync, parameters, channelI, callback)
 {
@@ -27,29 +40,29 @@ function myAjax(method, url, isAsync, parameters, channelI, callback)
 /*
 function findAGoodChannel()  //该方法对服务器压力过大不建议使用，随机获取已经很好了
 {
-    var url = 'loginCode.jsp';
-    for (var i = 0; i < channels.length; i++)
-    {
-        if (isStopFinding)
-        {
-            //$("#signBtn").disabled = false;
-            return;
-        }
-        currentJ = i;
-        channel = channels[i];
-        myAjax("get", channel + url, false, "", currentJ + 1, forAChannel);
-    }
-    if (!isStopFinding)
-    { //如果一遍下来全满了，就随机找一个通道
-        $("#myMesgBox").html("唉！所有通道都满啦！(@^_^@)所以帮你随机选择了一个，或者你可以再试试？");
-        $("#myMesgBox").show();
-        randomAChannel();
-    }
+var url = loginCodeUrl;
+for (var i = 0; i < channels.length; i++)
+{
+if (isStopFinding)
+{
+//$("#signBtn").disabled = false;
+return;
+}
+currentJ = i;
+channel = channels[i];
+myAjax("get", channel + url, false, "", currentJ + 1, forAChannel);
+}
+if (!isStopFinding)
+{ //如果一遍下来全满了，就随机找一个通道
+$("#myMesgBox").html("唉！所有通道都满啦！(@^_^@)所以帮你随机选择了一个，或者你可以再试试？");
+$("#myMesgBox").show();
+randomAChannel();
+}
 }*/
 
 function randomAChannel()
 { //随机选择一个通道
-    var url = 'loginCode.jsp';
+    var url = loginCodeUrl;
     var randomI = parseInt(Math.random() * (channels.length - 1));
     currentJ = randomI;
     channel = channels[randomI];
@@ -69,14 +82,14 @@ function forAChannel(channelI, data)
         $("#myMesgBox").show();
         document.getElementById("signBtn").disabled = true;
         $("#authImg").html("<img id='loginImg' src='" + channel +
-            "loginSign.jsp' border=0>");
+            loginSignUrl + "' border=0>");
         
     }
     else
     {
         document.getElementById("signBtn").disabled = false;
         $("#authImg").html("<img id='loginImg' src='" + channel +
-            "loginSign.jsp' border=0>");
+            loginSignUrl + "' border=0>");
         $("#codePanel").html("<tr><td colspan='2'><span style='font-size:12px;color:#cc0000'>随机获取到了通道" + channelI + ",但这个通道人数已满!建议重新选择通道!</span></td></tr>");
     }
     
@@ -84,7 +97,7 @@ function forAChannel(channelI, data)
 function searchFruit()
 {
     
-    var url = 'cert.jsp';
+    var url = certUrl;
     var form = $("#loginForm").serialize();
     myAjax("post", channel + url, true, form, currentJ + 1, showResponse);
     
@@ -106,7 +119,7 @@ function showResponse(channelI, data)
         ttt = ttt.replace(/&nbsp;/g, "");
         $('#tips').html(ttt);
         $("#tips").show();
-        $("#authImg").html("<img id='loginImg' src='" + channel + "loginSign.jsp?tempTime='" + Math.random() + " border=0>");
+        $("#authImg").html("<img id='loginImg' src='" + channel + loginSignUrl + "?tempTime='" + Math.random() + " border=0>");
         loginForm.loginButton.disabled = false;
     }
     else
@@ -124,7 +137,7 @@ function showResponse(channelI, data)
 //2.ajax学生信息认证函数---------------------------------------------------------
 function checkUserInfo()
 {
-    var url = 'confirmStudentInfo.jsp';
+    var url = confirmStudentInfoUrl;
     myAjax("post", channel + url, true, "", currentJ + 1, showResponse2);
     
 }
@@ -158,7 +171,7 @@ function showResponse2(channelI, data)
 function checkPermit()
 {
     
-    var url = 'permission.jsp';
+    var url = permissionUrl;
     myAjax("post", channel + url, true, "", currentJ + 1, showResponse3);
     
 }
@@ -167,7 +180,7 @@ function showResponse3(channelI, data)
     
     if (data.match("所有条件均符合选课条件") != null)
     { //可改
-        var url = "./studentSelectSubject.htm";
+        var url = studentSelectSubjectUrl;
         chrome.extension.getBackgroundPage().Gobal_currentChannel = channel;
         if (isAutoSelectCourse)
         {
@@ -201,7 +214,7 @@ function showResponse3(channelI, data)
 
 function changeImage()
 {
-    document.getElementById("loginImg").src = channel + "loginSign.jsp?temptime=" + Math.random();
+    document.getElementById("loginImg").src = channel + loginSignUrl + "?temptime=" + Math.random();
 }
 
 function changeBox()
@@ -211,7 +224,7 @@ function changeBox()
     
     loginForm.loginButton.disabled = false;
     $('#codePanel').html("");
-    var url = 'loginSign.jsp';
+    var url = loginSignUrl;
     
     userName = loginForm.username.value;
     pwd = loginForm.password.value;
@@ -304,7 +317,7 @@ function checkForm()
     else
     {
         $('#mesPanel').show();
-		localStorage.setItem("ecardNum", loginForm.username.value);
+        localStorage.setItem("ecardNum", loginForm.username.value);
         localStorage.setItem("ecardPwd", loginForm.password.value);
         localStorage.setItem("stuNum", loginForm.stuname.value);
         loginForm.loginButton.disabled = true;
@@ -394,7 +407,6 @@ window.onload = function forOnLoad() //载入页面就执行
         changeBox();
     }
     );
-    
     
     $("#closeTips").bind("click", function () //关闭提示
     {

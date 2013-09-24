@@ -14,7 +14,8 @@
 		"http://*/selectSubjectForTyxy*"
     ],
 	"web_accessible_resources": [
-	    "song/song.ogg"
+	    "song/song.ogg",
+		"img/icon-48.png"
 	],
     "background": {
         "page": "background.html"
