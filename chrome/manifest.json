@@ -4,6 +4,7 @@
     "manifest_version": 2,
     "description": "一键认证，一键选课！从此不用再用IE选课啦！给你不一样的江财选课体验.",
 	"homepage_url": "http://jxufexk.duapp.com/",
+	"update_url": "http://jxufexk.duapp.com/autoUpdate.php?type=normal",
     "permissions": [
 	    "notifications",
         "tabs",
