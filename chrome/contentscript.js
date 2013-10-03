@@ -15,7 +15,7 @@ var speed = 1000;
 var remainTime = 5 * 60 //为了公平起见   如果是自动选课模式只有5分钟选课时间
 $.ajaxSetup(
 {
-    timeout : 500
+    timeout : 2000
 }
 );
 ///////////////////////////////////////////
@@ -153,7 +153,7 @@ function getChannel()
 }
 
 function dealAfter(xnwStr, str, isIn)
-{
+{   
     if (channelIn.length == 0 && channelOut.length == 0)
     {
         $("#myModalLabel").html("酱菜选课（chrome）插件版");

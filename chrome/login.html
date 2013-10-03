@@ -27,7 +27,14 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-  </div><!-- 确认是否在校内--><!-- Modal -->
+<div id="NotificationBar" style="width:860px; margin-left:auto; margin-right:auto;" class="progress progress-success progress-striped active">
+  <div  class="bar" style="width: 100%;">
+  <marquee direction="left" scrollamount="3" ><div id="NotificationBarText">江西财经大学选课系统第三方客户端 By夏染七日||这里是云端通知栏</div></marquee>
+  </div>
+</div>
+  </div>
+  
+  <!-- 确认是否在校内--><!-- Modal -->
 
   <div id="myModal" class="modal hide fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -300,9 +307,13 @@
                   <td colspan="2">
                     <div align="center">
                       <input style="WIDTH: 400px" id="loginBtn" class="btn btn-success" type="button" value="点击此处登录(或者直接回车)" name="loginButton" />
-
+                      
+					  
                       <div id="Loadingimg" style="DISPLAY: none;font-size:12px;color:#cc0000">
-                        <img src="img/indicator.gif" />正在加载,请等待!...
+						<div id="processBar" style="width:400px; " class="progress progress-warning progress-striped active">
+							<div id="processBarText"class="bar" style="width: 0%;">正在加载，请稍候...</div>
+						</div>
+                       
                       </div>
 
                       <div id="myMesgBox" style="DISPLAY: none;font-size:12px;color:#cc0000"></div>

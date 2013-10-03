@@ -1,8 +1,8 @@
-var Gobal_channels = new Array();
-var Gobal_isInSchool ="";
-var Gobal_courseForm = {};
-var Gobal_currentChannel ="";
-var Gobal_isAutoSelectCourse = false;
+var Global_channels = new Array();
+var Global_isInSchool ="";
+var Global_courseForm = {};
+var Global_currentChannel ="";
+var Global_isAutoSelectCourse = false;
 var loginWindowId ;
 var isPlayAudio = false;
 
@@ -33,18 +33,18 @@ chrome.extension.onRequest.addListener(
     function (request,  sender,sendResponse) {
         if (request.preIsOk == "yes") {
             sendResponse({farewell: "is recevied!"});
-            Gobal_isInSchool = request.isInSchool;
+            Global_isInSchool = request.isInSchool;
             var channelStr = request.channelStr;
             console.log(channelStr);
-            Gobal_channels = channelStr.split("&");
-            console.log(Gobal_channels);
+            Global_channels = channelStr.split("&");
+            console.log(Global_channels);
             showLogin();
         }
 		else if(request.loginIsOk == "yes"){
 		    sendResponse({farewell: "is recevied!"});
 			chrome.windows.remove(loginWindowId, function(){
 
-			   chrome.tabs.create({url:Gobal_currentChannel+"studentSelectSubject.htm"}, function(){
+			   chrome.tabs.create({url:Global_currentChannel+"studentSelectSubject.htm"}, function(){
 			        //alert("恭喜你！登陆成功！");
 				    // 显示通知
 				    successNotification.show();
@@ -60,16 +60,16 @@ chrome.extension.onRequest.addListener(
 		}
 		
 		else if(request.getAuto == "yes"){
-		    if(Gobal_isAutoSelectCourse){
-				sendResponse({autoSelect: true,courseForm:Gobal_courseForm,currentChannel:Gobal_currentChannel});
+		    if(Global_isAutoSelectCourse){
+				sendResponse({autoSelect: true,courseForm:Global_courseForm,currentChannel:Global_currentChannel});
 		    }
 			else {
 			    sendResponse({autoSelect: false});
 			}
 		}
 		else if(request.deleteAuto == "yes"){
-		    Gobal_isAutoSelectCourse = false;
-			Gobal_courseForm = "";
+		    Global_isAutoSelectCourse = false;
+			Global_courseForm = "";
 		}
 		else if(request.getPlay){  //是否播放音乐
 		    if(isPlayAudio){
