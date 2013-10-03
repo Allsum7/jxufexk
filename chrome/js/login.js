@@ -23,7 +23,7 @@ var loginSignUrl = 'loginSign.jsp'; //用来获取该通道的验证码
 var studentSelectSubjectUrl = "./studentSelectSubject.htm"; //选课界面
 var logoutUrl = "lightSelectSubject/logout.jsp"; //用来注销用户
 
-var getNotificationUrl ="http://jxufexk.duapp.com/getNotification.php";//获取最新通知 
+var getNotificationUrl = "http://jxufexk.duapp.com/getNotification.php"; //获取最新通知
 ///////////////////////////////////////////////////////
 
 
@@ -351,47 +351,51 @@ function readLocalStore()
         $("#username").focus();
     }
 }
-function getNotification(i,data){
-
-	if(data.substr(0,1)=="@"){ //@开始表示非更新消息  更新消息只针对ie版
-	   $("#NotificationBarText").html(data.substr(1,data.length-1));
-	}
-	 
+function getNotification(i, data)
+{
+    
+    if (data.substr(0, 1) == "@")
+    { //@开始表示非更新消息  更新消息只针对ie版
+        $("#NotificationBarText").html(data.substr(1, data.length - 1));
+    }
+    
 }
 window.onload = function forOnLoad() //载入页面就执行
 {
-    var myInterval ='';
+    var myInterval = '';
     //ajax 全局事件
     $(document).ajaxStart(function ()
     {
-	    var remainTime = 1000;
-		var processI= 50;
+        var remainTime = 1000;
+        var processI = 50;
         $("#Loadingimg").show();
-		$("#processBarText").attr("style","width: 50%;");
-		myInterval = setInterval(function(){
-		    //alert(remainTime +"   "+processI);
-		    if(remainTime==0){
-			  clearInterval(myInterval);
-			  return ;
-			}
-		    remainTime -=100;
-			processI+=5;
-			$("#processBarText").attr("style","width: "+processI+"%;");
-		},100);
-		
+        $("#processBarText").attr("style", "width: 50%;");
+        myInterval = setInterval(function ()
+            {
+                //alert(remainTime +"   "+processI);
+                if (remainTime == 0)
+                {
+                    clearInterval(myInterval);
+                    return;
+                }
+                remainTime -= 100;
+                processI += 5;
+                $("#processBarText").attr("style", "width: " + processI + "%;");
+            }, 100);
+        
     }
     )
     .ajaxSuccess(function (evt, request, settings)
     {
-	    clearInterval(myInterval);
-	    $("#processBarText").attr("style","width:100%;");
-		$("#Loadingimg").hide();
+        clearInterval(myInterval);
+        $("#processBarText").attr("style", "width:100%;");
+        $("#Loadingimg").hide();
         
     }
     )
     .ajaxError(function (event, request, settings)
     {
-	    document.getElementById("signBtn").disabled = false;
+        document.getElementById("signBtn").disabled = false;
         $("#Loadingimg").html("啊哦！网络请求出错!可能是服务器崩溃咯！");
     }
     );
@@ -481,6 +485,6 @@ window.onload = function forOnLoad() //载入页面就执行
     $("#showXnXwText").show();
     
     readLocalStore(); //读取上次存到本地的个人信息
-	
-	myAjax("get", getNotificationUrl, true, "", 0, getNotification);
+    
+    myAjax("get", getNotificationUrl, true, "", 0, getNotification);
 }
