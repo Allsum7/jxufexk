@@ -34,7 +34,7 @@
     "content_scripts": [
         {
             "matches": ["http://xk.jxufe.edu.cn/","http://xk.jxufe.cn/","http://*/lightSelectSubject*","http://*/selectSubjectForTyxy*"],
-            "js": ["js/jquery.js","js/bootstrap-transition.js","js/bootstrap-modal.js","contentscript.js"],
+            "js": ["js/jquery-new.js","js/bootstrap-transition.js","js/bootstrap-modal.js","contentscript.js"],
 			"css":["css/bootstrap.min.css"]
 			
         }
