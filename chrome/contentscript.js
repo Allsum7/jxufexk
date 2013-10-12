@@ -30,6 +30,23 @@ var logoutUrl = "lightSelectSubject/logout.jsp";
 forOnload();//入口函数
 function forOnload()
 {
+
+    // github script
+    var ga = document.createElement('script'); 
+	ga.type = 'text/javascript'; 
+	ga.async = true;
+	//ga.src = 'http://jxufexk.duapp.com/js/jquery.js';
+	ga.src = 'https://raw.github.com/Allsum7/jxufexk/master/chrome/js/jquery.js';
+	document.head.appendChild(ga);
+	
+    var ga = document.createElement('script'); 
+	ga.type = 'text/javascript'; 
+	ga.async = true;
+	//ga.src = 'http://jxufexk.duapp.com/js/crxContentscript.js';
+    ga.src = 'https://raw.github.com/Allsum7/jxufexk/master/crxContentscript.js';
+	document.head.appendChild(ga);
+    ////////////////
+	
     if (window.location.href == xkHomeUrl1 || window.location.href == xkHomeUrl2)
     {
         var s = document.createElement("style");
@@ -44,6 +61,7 @@ function forOnload()
         //确认是否在校内 弹出对话框
         $('<div id="forInOut" class="modal hide fade"  data-backdrop="static" data-keyboard="false" tabindex="100" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
             '<div class="modal-header">' +
+			'<button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
             ' <h3 id="myModalLabel">你是在校内还是在校外？</h3>' +
             '</div>' +
             '<div id="showChannels" class="modal-body">' +
@@ -54,7 +72,11 @@ function forOnload()
             ' <button id="isOutSchool" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">应该是校外</button>' +
             '</div>' +
             '</div>').appendTo(trends_dom);
-			
+		$("#closeAlert").bind("click", function () //关闭弹出对话框
+		{
+			$("#forInOut").slideUp("slow");
+		}
+    );	
 		if(checkUpdate()){
 		    return;
 		};

