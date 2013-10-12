@@ -1,1 +1,1 @@
-alert("github is ok!");
+alert("紧急通知！github is ok!");
