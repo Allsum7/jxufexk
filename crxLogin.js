@@ -1,2 +1,2 @@
-alert("github is ok！");
-$("#autoSelect").show();
+// login界面的远程控制代码  可以控制dom
+
