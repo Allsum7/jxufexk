@@ -47,6 +47,12 @@ chrome.extension.onRequest.addListener(
 			   chrome.tabs.create({url:Global_currentChannel+"studentSelectSubject.htm"}, function(){
 			        //alert("恭喜你！登陆成功！");
 				    // 显示通知
+				    // 创建一个简单的文字通知：
+				    var successNotification = webkitNotifications.createNotification(
+					'img/icon-48.png',  // icon url - can be relative
+					'酱菜选课友情提示：',  // notification title
+					'恭喜你！成功进入选课系统，进行选课！祝你选课愉快！'  // notification body text
+			            );
 				    successNotification.show();
 					
 				    setTimeout(function () {
