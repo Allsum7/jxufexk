@@ -9,7 +9,7 @@ var isStopFinding = false;
 var currentJ = 0;
 $.ajaxSetup(
 {
-    timeout : 2000
+    timeout : 1000
 }
 );
 //////////////////////////////////////////////////
