@@ -270,7 +270,7 @@ function isInSchool(url)
         {
             userIsInSchool = false;
             var xnwStr = "校外";
-            dealAfter(xnwStr, outStr, true);
+            dealAfter(xnwStr, outStr, false);
         }
         
     }
