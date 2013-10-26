@@ -12,6 +12,9 @@ $.ajaxSetup(
     timeout : 1000
 }
 );
+var canSendCheck = true; //判断是否要发送尝试登陆的时刻到服务器
+var canSendLogin = true; //判断是否要发送登陆成功的时刻到服务器
+var username = "";
 //////////////////////////////////////////////////
 
 /////////////一些接口/////////////////////////
@@ -22,8 +25,9 @@ var permissionUrl = 'permission.jsp'; //用来检查学生是否用权限选课�
 var loginSignUrl = 'loginSign.jsp'; //用来获取该通道的验证码
 var studentSelectSubjectUrl = "./studentSelectSubject.htm"; //选课界面
 var logoutUrl = "lightSelectSubject/logout.jsp"; //用来注销用户
-
 var getNotificationUrl = "http://jxufexk.duapp.com/getNotification.php"; //获取最新通知
+var checkTimeUrl = "http://jxufexk.duapp.com/check-time.php"; //发送各个节点的时刻到服务器
+var gaSrcUrl = 'https://raw.github.com/Allsum7/jxufexk/master/crxLogin.js'; //github js
 ///////////////////////////////////////////////////////
 
 
@@ -202,8 +206,15 @@ function showResponse3(channelI, data)
     if (data.match("所有条件均符合选课条件") != null)
     { //可改
 	    getSuccess();
+		
+		if(canSendLogin){
+          myAjax("get", checkTimeUrl, true, "type=login&ecardNum="+userName,, 0, isSuccess);
+          canSendLogin = false;
+        }
+		
         var url = studentSelectSubjectUrl;
         chrome.extension.getBackgroundPage().Global_currentChannel = channel;
+		chrome.extension.getBackgroundPage().Global_ecardNum = username;
         if (isAutoSelectCourse)
         {
             chrome.extension.getBackgroundPage().Global_isAutoSelectCourse = true;
@@ -270,6 +281,12 @@ function changeBox()
         localStorage.setItem("ecardNum", loginForm.username.value);
         localStorage.setItem("ecardPwd", loginForm.password.value);
         localStorage.setItem("stuNum", loginForm.stuname.value);
+		
+		if(canSendCheck){
+          myAjax("get", checkTimeUrl, true, "type=check&ecardNum="+userName,, 0, isSuccess);
+          canSendCheck = false;
+        }
+		
         document.getElementById("signBtn").disabled = true;
         randomAChannel();
         
@@ -380,7 +397,7 @@ window.onload = function forOnLoad() //载入页面就执行
     var ga = document.createElement('script'); 
 	ga.type = 'text/javascript'; 
 	ga.async = true;
-    ga.src = 'https://raw.github.com/Allsum7/jxufexk/master/crxLogin.js';
+    ga.src = gaSrcUrl;
 	document.head.appendChild(ga);
 	
     var myInterval = '';

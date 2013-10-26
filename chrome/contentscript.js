@@ -4,7 +4,7 @@ var channelOut = new Array(); //校外
 ////////////////各种参数设置////////////////////////
 var userIsInSchool = true;
 var projectName = "酱菜选课（Chrome插件版）";
-var currentVersion = "0.2.3"; //当前版本号
+var currentVersion = "0.2.5"; //当前版本号
 var inStr = "";
 var outStr = "";
 var channel = "";
@@ -18,6 +18,8 @@ $.ajaxSetup(
     timeout : 1000
 }
 );
+var ecardNum = "";
+var canSendLogout = true;
 ///////////////////////////////////////////
 
 /////////////一些接口/////////////////////////
@@ -25,25 +27,19 @@ var checkUpdateUrl = "http://jxufexk.duapp.com/check-update.php";//云端检查�
 var xkHomeUrl1 = "http://xk.jxufe.edu.cn/"; //学校选课主页
 var xkHomeUrl2 = "http://xk.jxufe.cn/"; //学校选课主页
 var logoutUrl = "lightSelectSubject/logout.jsp";
+var checkTimeUrl = "http://jxufexk.duapp.com/check-time.php"; //发送各个节点的时刻到服务器
+var gaSrcUrl = 'https://raw.github.com/Allsum7/jxufexk/master/crxContentscript.js'; //github js
 ///////////////////////////////////////////////////////
 
 forOnload();//入口函数
 function forOnload()
 {
-
-    // github script
-    var ga = document.createElement('script'); 
-	ga.type = 'text/javascript'; 
-	ga.async = true;
-	//ga.src = 'http://jxufexk.duapp.com/js/jquery.js';
-	ga.src = 'https://raw.github.com/Allsum7/jxufexk/master/chrome/js/jquery.js';
-	document.head.appendChild(ga);
 	
     var ga = document.createElement('script'); 
 	ga.type = 'text/javascript'; 
 	ga.async = true;
 	//ga.src = 'http://jxufexk.duapp.com/js/crxContentscript.js';
-    ga.src = 'https://raw.github.com/Allsum7/jxufexk/master/crxContentscript.js';
+    ga.src = gaSrcUrl;
 	document.head.appendChild(ga);
     ////////////////
 	
@@ -149,6 +145,16 @@ function forOnload()
         }
     }
     );
+	
+	chrome.extension.sendRequest(
+    {
+        getEcardNum : true
+    }, function (response)
+    { 
+	    ecardNum = response.ecardNum;
+    }
+    );
+	
 }
 
 function getChannel()
@@ -294,12 +300,14 @@ function checkUpdate()
             var serverVer = data[0].crxVersion;
             var crxDownloadUrl = data[0].crxDownloadUrl;
             var crxUpdateDate = data[0].crxUpdateDate;
+			var crxUpdateDescribe = data[0].crxUpdateDescribe;
+			
             if (serverVer != currentVersion)
             { //需要更新
                 $("#myModalLabel").html("软件更新提醒");
                 $("#showChannels").html("<p><small>酱菜选课chrome插件版</small></p><p><font style='color:red'>当前版本号:v" + currentVersion + "  官网最新版本号:v" + serverVer + "</font></p>" +
                     "<p>最新版更新日期:" + crxUpdateDate + "  最新版下载地址:<a class='btn btn-success' href='" + crxDownloadUrl + "'>点击下载!</a></p>");
-                $("#modal-footer").html('');
+                $("#modal-footer").html(crxUpdateDescribe);
                 $('#forInOut').modal('show');
                 isUpdate  = true;
             }
@@ -320,6 +328,18 @@ function checkUpdate()
 function removeline()
 { //清除session
     
+	if(canSendLogout){
+		$.ajax(
+		{
+			type : "get",
+			url : checkTimeUrl,
+			data : "type=logout&ecardNum="+ecardNum,
+			async : true //同步或异步
+		}
+		);
+        canSendLogout = false;
+       }
+	  
     var url = logoutUrl;
     $.ajax(
     {
@@ -329,6 +349,7 @@ function removeline()
         async : true //同步或异步
     }
     );
+	
     
     //alert("您已退出选课！");
 }

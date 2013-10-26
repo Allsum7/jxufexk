@@ -5,6 +5,7 @@ var Global_currentChannel ="";
 var Global_isAutoSelectCourse = false;
 var loginWindowId ;
 var isPlayAudio = false;
+var Global_ecardNum = "";
 
 function showLogin() {
     var loginUrl = chrome.extension.getURL('login.html');
@@ -85,5 +86,9 @@ chrome.extension.onRequest.addListener(
 			else {
 			    sendResponse({playAudio: false});
 			}
+		}
+		
+		else if(request.getEcardNum){
+		    sendResponse({ecardNum: Global_ecardNum});
 		}
      });
