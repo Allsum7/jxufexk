@@ -208,7 +208,7 @@ function showResponse3(channelI, data)
 	    getSuccess();
 		
 		if(canSendLogin){
-          myAjax("get", checkTimeUrl, true, "type=login&ecardNum="+userName,, 0, isSuccess);
+          myAjax("get", checkTimeUrl, true, "type=login&ecardNum="+userName,0, isSuccess);
           canSendLogin = false;
         }
 		
@@ -283,7 +283,7 @@ function changeBox()
         localStorage.setItem("stuNum", loginForm.stuname.value);
 		
 		if(canSendCheck){
-          myAjax("get", checkTimeUrl, true, "type=check&ecardNum="+userName,, 0, isSuccess);
+          myAjax("get", checkTimeUrl, true, "type=check&ecardNum="+userName,0, isSuccess);
           canSendCheck = false;
         }
 		
